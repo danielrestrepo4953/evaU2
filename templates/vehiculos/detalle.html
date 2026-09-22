@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle del vehículo{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="mb-4">Detalle del vehículo</h1>
+
+        {% if vehiculo and detalle %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <p><strong>Marca:</strong> {{ vehiculo.marca }}</p>
+                    <p><strong>Modelo:</strong> {{ vehiculo.modelo }}</p>
+                    <p><strong>Año:</strong> {{ vehiculo.anio }}</p>
+                    <p><strong>Patente:</strong> {{ vehiculo.patente }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Color:</strong> {{ detalle.color }}</p>
+                    <p><strong>Tipo de motor:</strong> {{ detalle.tipo_motor }}</p>
+                    <p><strong>Tipo de caja:</strong> {{ detalle.tipo_caja }}</p>
+                    <p><strong>Último servicio:</strong> {{ detalle.fecha_ultimo_servicio }}</p>
+                    <p><strong>Kilometraje:</strong> {{ detalle.kilometraje }}</p>
+                    <p><strong>Combustible:</strong> {{ detalle.combustible }}</p>
+                    <p><strong>Estado:</strong> {{ detalle.estado }}</p>
+                    <p><strong>Observaciones:</strong> {{ detalle.observaciones }}</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">No hay detalle disponible para este vehículo.</div>
+        {% endif %}
+
+        <a href="{% url 'inicio-vehiculos' %}" class="btn btn-outline-primary mt-3">Volver a la lista</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "nombre": "Bujía de Iridio",
+        "precio": 15990,
+        "imagen": "images/repuestos/bujia_iridio.jpg",
+        "descripcion": "Bujía de Iridio de alta durabilidad. Compatible con motores de gasolina de 1.6 a 2.0 litros. Proporciona una mejor combustión y mayor eficiencia en el consumo de combustible. Vida útil de hasta 100,000 km."
+    },
+    {
+        "id": 2,
+        "nombre": "Filtro de Aire",
+        "precio": 8990,
+        "imagen": "images/repuestos/filtro_aire.jpeg",
+        "descripcion": "Filtro de aire premium para sistemas de inyección. Retiene el 99.5% de partículas contaminantes. Mejora la circulación de aire y aumenta la potencia del motor. Cambio recomendado cada 15,000 km."
+    },
+    {
+        "id": 3,
+        "nombre": "Pastillas de Freno",
+        "precio": 32990,
+        "imagen": "images/repuestos/frenos.jpeg",
+        "descripcion": "Juego de pastillas de freno semimetálicas. Excelente poder de frenado y durabilidad. Compatible con sistemas de freno ventilado. Incluye aditivos anti-ruido. Garantía de 2 años o 40,000 km."
+    }
+]

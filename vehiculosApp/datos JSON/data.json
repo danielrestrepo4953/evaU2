@@ -1,0 +1,102 @@
+{
+  "vehiculos": [
+    {
+      "id": 1,
+      "marca": "Toyota",
+      "modelo": "Corolla",
+      "anio": 2022,
+      "patente": "AB-1234",
+      "imagen": "images/vehiculos/toyota-corolla.jpg"
+
+    },
+    {
+      "id": 2,
+      "marca": "Ford",
+      "modelo": "Focus",
+      "anio": 2021,
+      "patente": "CD-4567",
+      "imagen": "images/vehiculos/ford-focus.jpg"
+    },
+    {
+      "id": 3,
+      "marca": "Volkswagen",
+      "modelo": "Golf",
+      "anio": 2020,
+      "patente": "EF-8910",
+        "imagen": "images/vehiculos/vw-golf.jpg"
+    },
+    {
+      "id": 4,
+      "marca": "Chevrolet",
+      "modelo": "Cruze",
+      "anio": 2019,
+      "patente": "GH-2345",
+        "imagen": "images/vehiculos/chevrolet-cruze.jpg"
+    },
+    {
+      "id": 5,
+      "marca": "Hyundai",
+      "modelo": "Elantra",
+      "anio": 2023,
+      "patente": "IJ-6789",
+        "imagen": "images/vehiculos/hyundai-elantra.jpg"
+    }
+  ],
+  "detalles": [
+    {
+      "id": 1,
+      "color": "Blanco",
+      "tipo_motor": "Gasolina 1.8L",
+      "tipo_caja": "Automática",
+      "fecha_ultimo_servicio": "2025-05-12",
+      "kilometraje": 42000,
+      "combustible": "Bencina",
+      "estado": "En buen estado",
+      "observaciones": "Sin novedades mayores, cambió aceite y filtros."
+    },
+    {
+      "id": 2,
+      "color": "Azul",
+      "tipo_motor": "Diesel 2.0L",
+      "tipo_caja": "Manual",
+      "fecha_ultimo_servicio": "2025-06-03",
+      "kilometraje": 51000,
+      "combustible": "Diésel",
+      "estado": "Requiere revisión de frenos",
+      "observaciones": "Se recomienda revisión del sistema de frenos en 1000 km."
+    },
+    {
+      "id": 3,
+      "color": "Gris",
+      "tipo_motor": "Gasolina 1.6L",
+      "tipo_caja": "Automática",
+      "fecha_ultimo_servicio": "2025-04-20",
+      "kilometraje": 39000,
+      "combustible": "Bencina",
+      "estado": "Excelente",
+      "observaciones": "Vehículo con buen mantenimiento y sin fallas reportadas."
+    },
+    {
+      "id": 4,
+      "color": "Negro",
+      "tipo_motor": "Gasolina 1.4L",
+      "tipo_caja": "Manual",
+      "fecha_ultimo_servicio": "2025-03-15",
+      "kilometraje": 67000,
+      "combustible": "Bencina",
+      "estado": "En revisión",
+      "observaciones": "Se detectó desgaste leve en suspensión delantera."
+    },
+    {
+      "id": 5,
+      "color": "Rojo",
+      "tipo_motor": "Gasolina 2.0L",
+      "tipo_caja": "Automática",
+      "fecha_ultimo_servicio": "2025-07-01",
+      "kilometraje": 28000,
+      "combustible": "Bencina",
+      "estado": "Muy buen estado",
+      "observaciones": "Último servicio realizado con revisión general y alineación."
+    }
+  ]
+}

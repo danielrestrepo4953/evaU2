@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle del cliente{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <h1 class="mb-4">Detalle del cliente</h1>
+
+        {% if nombre and apellido %}
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <p><strong>Nombre:</strong> {{ nombre }} {{ apellido }}</p>
+                    <p><strong>Correo:</strong> {{ correo }}</p>
+                    <p><strong>Cargo:</strong> {{ cargo }}</p>
+                    <p><strong>Dirección:</strong> {{ direccion }}</p>
+                    <p><strong>Saldo de cuenta:</strong> ${{ saldo }}</p>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Resumen</h5>
+                            <p class="mb-0">Información detallada del cliente dentro del sistema de gestión del taller.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">No hay detalle disponible para este cliente.</div>
+        {% endif %}
+
+        <a href="{% url 'home_clientes' %}" class="btn btn-outline-primary mt-4">Volver a la lista</a>
+    </div>
+</div>
+{% endblock %}

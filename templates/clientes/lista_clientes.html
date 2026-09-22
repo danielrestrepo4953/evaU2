@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Clientes registrados{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4 page-header">
+    <h1 class="mb-0 display-6 fw-semibold">Clientes registrados</h1>
+    <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
+</div>
+
+<div class="row g-4">
+    {% for c in clientes %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <img src="{% static c.imagen %}" class="card-img-top" alt="{{ c.nombre }} {{ c.apellido }}" style="height: 220px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+                <div class="mb-3">
+                    <span class="badge bg-primary mb-2">Cliente</span>
+                    <h5 class="card-title mb-1">{{ c.nombre }} {{ c.apellido }}</h5>
+                </div>
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item px-0"><strong>Correo:</strong> {{ c.correo }}</li>
+                    <li class="list-group-item px-0"><strong>Cargo:</strong> {{ c.cargo }}</li>
+                    <li class="list-group-item px-0"><strong>Teléfono:</strong> {{ c.telefono }}</li>
+                </ul>
+                <a href="{% url 'detalle_cliente' c.nombre %}" class="btn btn-dark mt-auto">Ver detalles</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No hay clientes disponibles.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

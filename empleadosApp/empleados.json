@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "nombre": "Diego",
+        "apellido": "Villalobos",
+        "cargo": "Mecanico",
+        "foto": "empleados/user1.jpg",
+        "direccion": "La Serena",
+        "fecha_contratacion": "15 de marzo de 2025",
+        "telefono": "+56 9 1234 5678",
+        "correo": "Diego@empresa.cl",
+        "rut": "12.345.678-9"
+    },
+    {
+        "id": 2,
+        "nombre": "María",
+        "apellido": "González",
+        "cargo": "Gerente",
+        "foto": "empleados/user2.jpg",
+        "rut": "98.765.432-1",
+        "direccion": "Santiago",
+        "fecha_contratacion": "1 de enero de 2020",
+        "telefono": "+56 9 8765 4321",
+        "correo": "maria.gonzalez@empresa.cl"
+    },
+    {
+        "id": 3,
+        "nombre": "Carlos",
+        "apellido": "Rodríguez",
+        "cargo": "Administrador",
+        "foto": "empleados/user3.jpg",
+        "rut": "11.222.333-4",
+        "direccion": "Valparaíso",
+        "fecha_contratacion": "10 de junio de 2022",
+        "telefono": "+56 9 5678 1234",
+        "correo": "carlos.rodriguez@empresa.cl"
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "nombre": "Vito",
+        "apellido": "Corleone",
+        "correo": "vcorleone@gmail.com",
+        "cargo": "El Padrino",
+        "direccion": "Mallorca St, Long Beach, Nueva York",
+        "saldo": 1000000,
+        "imagen": "images/clientes/vito.png",
+        "telefono": "+1 555-1234"
+    },
+    {
+        "nombre": "Michael",
+        "apellido": "Corleone",
+        "correo": "mcorleone@gmail.com",
+        "cargo": "Sucesión",
+        "direccion": "Mallorca St, Long Beach, Nueva York",
+        "saldo": 500000,
+        "imagen": "images/clientes/michael.png",
+        "telefono": "+1 555-5678"
+    },
+    {
+        "nombre": "Vincent",
+        "apellido": "Corleone",
+        "correo": "vincorleone@gmail.com",
+        "cargo": "Consejero",
+        "direccion": "Mallorca St, Long Beach, Nueva York",
+        "saldo": 750000,
+        "imagen": "images/clientes/vincent.png",
+        "telefono": "+1 555-9012"
+    }
+]

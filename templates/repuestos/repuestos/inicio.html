@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Catálogo de repuestos{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4 page-header">
+    <h1 class="mb-0 display-6 fw-semibold">Catálogo de repuestos</h1>
+    <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <p class="lead mb-0">Selecciona uno de nuestros repuestos para ver más detalles</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for repuesto in repuestos %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <img src="{% static repuesto.imagen %}" class="card-img-top" alt="{{ repuesto.nombre }}" style="height: 220px; object-fit: cover;">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ repuesto.nombre }}</h5>
+                <p class="card-text text-success fw-bold fs-5">${{ repuesto.precio|floatformat:0 }}</p>
+                <a href="{% url 'detalle_repuesto' repuesto.id %}" class="btn btn-dark mt-auto">Ver detalles</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info">No hay repuestos disponibles.</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
