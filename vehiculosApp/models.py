@@ -8,6 +8,7 @@ class Vehiculo(models.Model):
     anio = models.IntegerField(verbose_name="Año de fabricación")
     patente = models.CharField(max_length=10, unique=True)
     imagen = models.ImageField(upload_to='images/vehiculos/', null=True, blank=True)
+    creado = models.DateTimeField(default=timezone.now, blank=True, null=True, verbose_name="Fecha de creación")
 
     def __str__(self):
         return f"{self.marca} {self.modelo} ({self.anio})"
@@ -23,6 +24,7 @@ class Detalle(models.Model):
     color = models.CharField(max_length=50)
     tipo_motor = models.CharField(max_length=50)
     tipo_caja = models.CharField(max_length=50)
+    creado = models.DateTimeField(default=timezone.now, blank=True, null=True, verbose_name="Fecha de creación")
     fecha_ultimo_servicio = models.DateField(default=timezone.now, blank=True, null=True)
     kilometraje = models.IntegerField()
     estado = models.CharField(max_length=50, choices=estados, verbose_name="Estado del vehículo")
