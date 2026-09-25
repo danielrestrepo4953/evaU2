@@ -18,7 +18,11 @@
                 <div class="col-md-6">
                     <h2 class="mb-3">{{ repuesto.nombre }}</h2>
                     <p class="text-success fw-bold fs-3 mb-3">${{ repuesto.precio|floatformat:0 }}</p>
-                    <p><strong>Descripción:</strong> {{ repuesto.descripcion }}</p>
+                    {% if detalle %}
+                        <p><strong>Descripción:</strong> {{ detalle.descripcion }}</p>
+                    {% else %}
+                        <p class="text-muted">Este repuesto no tiene una descripción registrada.</p>
+                    {% endif %}
                 </div>
             </div>
         {% else %}

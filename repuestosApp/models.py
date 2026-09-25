@@ -12,7 +12,7 @@ class repuestos(models.Model):
     creado = models.DateTimeField(default=timezone.now, verbose_name='fecha de creacion')
 
     def __str__(self):
-        return f"{self.nombre} {self.codigo} {self.precio} {self.stock} {self.detalle   }"
+        return f"{self.nombre} {self.codigo} {self.precio} {self.stock} {self.detalle}"
 
     class Meta:
         db_table = 'repuestos'
