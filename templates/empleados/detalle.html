@@ -9,21 +9,29 @@
         <h1 class="mb-4">Detalle del empleado</h1>
 
         {% if empleado %}
-            <div class="row g-4 align-items-center">
-                <div class="col-md-6 text-center">
-                    <img src="{% static 'images/'|add:empleado.foto %}" class="img-fluid rounded shadow-sm" alt="{{ empleado.nombre }} {{ empleado.apellido }}" style="max-height: 350px; object-fit: cover; width: 100%;">
-                </div>
-                <div class="col-md-6">
-                    <h2 class="mb-3">{{ empleado.nombre }} {{ empleado.apellido }}</h2>
-                    <p><strong>Cargo:</strong> {{ empleado.cargo }}</p>
-                    <p><strong>Dirección:</strong> {{ empleado.direccion }}</p>
-                    <p><strong>Fecha de contratación:</strong> {{ empleado.fecha_contratacion }}</p>
-                    <p><strong>Teléfono:</strong> {{ empleado.telefono }}</p>
-                    <p><strong>Correo:</strong> {{ empleado.correo }}</p>
-                </div>
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6 text-center">
+                {% if empleado.detalle.foto %}
+                <img src="{{ empleado.detalle.foto.url }}" class="img-fluid rounded shadow-sm"
+                    alt="{{ empleado.nombre }} {{ empleado.apellido }}"
+                    style="max-height: 350px; object-fit: cover; width: 100%;">
+                {% else %}
+                <div class="bg-secondary text-white rounded d-flex align-items-center justify-content-center"
+                    style="height: 350px;">Sin foto</div>
+                {% endif %}
             </div>
+            <div class="col-md-6">
+                <h2 class="mb-3">{{ empleado.nombre }} {{ empleado.apellido }}</h2>
+                <p><strong>RUT:</strong> {{ empleado.rut }}</p>
+                <p><strong>Cargo:</strong> {{ empleado.cargo }}</p>
+                <p><strong>Dirección:</strong> {{ empleado.detalle.direccion }}</p>
+                <p><strong>Fecha de contratación:</strong> {{ empleado.detalle.fecha_contratacion }}</p>
+                <p><strong>Teléfono:</strong> {{ empleado.detalle.telefono }}</p>
+                <p><strong>Correo:</strong> {{ empleado.detalle.correo }}</p>
+            </div>
+        </div>
         {% else %}
-            <div class="alert alert-warning">No hay detalle disponible para este empleado.</div>
+        <div class="alert alert-warning">No hay detalle disponible para este empleado.</div>
         {% endif %}
 
         <a href="{% url 'principal' %}" class="btn btn-outline-primary mt-4">Volver a la lista</a>
