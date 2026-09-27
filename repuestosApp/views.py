@@ -1,42 +1,17 @@
-from django.shortcuts import render
-import json
-from pathlib import Path
-from django.conf import settings
+from django.shortcuts import get_object_or_404, render
+from repuestosApp.models import repuestos, descripcion
 
 
 def inicio(request):
-    """Vista que muestra la lista de repuestos desde JSON"""
-    ruta_json = Path(settings.BASE_DIR) / 'repuestosApp' / 'json' / 'repuestos.json'
-
-    with open(ruta_json, encoding='utf-8') as archivo:
-        repuestos = json.load(archivo)
-
-    contexto = {
-        'repuestos': repuestos
-    }
-
-    return render(request, 'repuestos/repuestos/inicio.html', contexto)
+    repuesto = repuestos.objects.all()
+    return render(request, 'repuestos/repuestos/inicio.html', {'repuestos': repuesto})
 
 
 def detalle_repuesto(request, repuesto_id):
-    """Vista que muestra los detalles de un repuesto específico"""
-    ruta_json = Path(settings.BASE_DIR) / 'repuestosApp' / 'json' / 'repuestos.json'
-
-    with open(ruta_json, encoding='utf-8') as archivo:
-        repuestos = json.load(archivo)
-
-    # Buscar el repuesto por ID
-    repuesto = None
-    for item in repuestos:
-        if item['id'] == repuesto_id:
-            repuesto = item
-            break
-
-    if not repuesto:
-        repuesto = repuestos[0]  # Mostrar el primero si no encuentra
-
+    repuesto = get_object_or_404(repuestos, id=repuesto_id)
+    detalle = descripcion.objects.filter(repuesto_id=repuesto_id).first()
     return render(
         request,
         'repuestos/repuestos/usuario.html',
-        {'repuesto': repuesto}
+        {'repuesto': repuesto, 'detalle': detalle}
     )
