@@ -1,26 +1,23 @@
-from django.shortcuts import render
-from django.conf import settings
-from pathlib import Path
-import json
+from django.shortcuts import render, get_object_or_404
+from .models import Cliente
 
 def lista_clientes(request):
-    json_path = Path(settings.BASE_DIR) / 'clientesApp' / 'data' / 'clientes.json'
-    
-    with open(json_path, encoding='utf-8') as file:
-        clientes = json.load(file)
-        
+    clientes = Cliente.objects.all()
     return render(request, 'clientes/lista_clientes.html', {'clientes': clientes})
 
 def detalle_cliente(request, nombre):
-    json_path = Path(settings.BASE_DIR) / 'clientesApp' / 'data' / 'clientes.json'
+    cliente = get_object_or_404(Cliente, nombre__iexact=nombre)
     
-    with open(json_path, encoding='utf-8') as file:
-        clientes = json.load(file)
+    # Preparamos las variables con los datos del cliente para que coincidan con tu HTML actual
+    contexto = {
+        'nombre': cliente.nombre,
+        'apellido': cliente.apellido,
+        'correo': cliente.correo,
+        'cargo': cliente.cargo,
+        'telefono': cliente.telefono,
+        'direccion': cliente.direccion,
+        'saldo': cliente.saldo,
+        'imagen': cliente.imagen,
+    }
     
-    cliente_encontrado = None
-    for c in clientes:
-        if c['nombre'].lower() == nombre.lower():
-            cliente_encontrado = c
-            break
-
-    return render(request, 'clientes/detalle_cliente.html', cliente_encontrado)
+    return render(request, 'clientes/detalle_cliente.html', contexto)
