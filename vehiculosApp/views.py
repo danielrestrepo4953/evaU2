@@ -1,18 +1,22 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 import json
 from pathlib import Path
 from vehiculosApp.models import Vehiculo, Detalle
 
 # Create your views here.
+@login_required
 def menu_principal(request):
     return render(request, 'principal.html')
 
+@login_required
 def inicio_vehiculos(request):
     vehiculos = Vehiculo.objects.all()
     return render(request, 'vehiculos/inicio.html', {'vehiculos': vehiculos})
 
+@login_required
 def detalle_vehiculo(request, vehiculo_id):
     
 

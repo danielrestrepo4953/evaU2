@@ -1,10 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Cliente
-
+from django.contrib.auth.decorators import login_required
+@login_required
 def lista_clientes(request):
     clientes = Cliente.objects.all()
     return render(request, 'clientes/lista_clientes.html', {'clientes': clientes})
-
+@login_required
 def detalle_cliente(request, nombre):
     cliente = get_object_or_404(Cliente, nombre__iexact=nombre)
     

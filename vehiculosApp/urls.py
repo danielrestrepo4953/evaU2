@@ -20,6 +20,6 @@ from vehiculosApp import views as vehiculos_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', vehiculos_views.inicio_vehiculos, name='inicio-vehiculos'),
+    path('inicio/', vehiculos_views.inicio_vehiculos, name='inicio-vehiculos'),
     path('detalle/<int:vehiculo_id>/', vehiculos_views.detalle_vehiculo, name='detalle-vehiculo'),
 ]
