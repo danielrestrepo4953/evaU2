@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+
+{% block title %}Reparaciones registradas{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-primary mb-2">Taller</span>
+        <h1 class="display-6 fw-semibold mb-1">Reparaciones registradas</h1>
+        <p class="text-muted mb-0">Consulta el historial de trabajos realizados a los vehículos.</p>
+    </div>
+    <a href="{% url 'registrar_reparacion' %}" class="btn btn-primary">Registrar reparación</a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <label for="buscar-reparaciones" class="form-label fw-semibold">Buscar reparación</label>
+        <div class="input-group">
+            <span class="input-group-text" aria-hidden="true">&#128269;</span>
+            <input type="search" id="buscar-reparaciones" class="form-control"
+                   placeholder="Marca, modelo, año, color, detalle o repuesto..."
+                   autocomplete="off">
+            <button type="button" id="limpiar-busqueda" class="btn btn-outline-secondary">
+                Limpiar
+            </button>
+        </div>
+        <div class="form-text">Los resultados se filtran automáticamente mientras escribes.</div>
+    </div>
+</div>
+
+{% if reparaciones %}
+    <div id="lista-reparaciones" class="row g-4">
+        {% for reparacion in reparaciones %}
+            <div class="col-12 reparacion-item"
+                 data-search="{{ reparacion.id }} {{ reparacion.vehiculo.marca }} {{ reparacion.vehiculo.modelo }} {{ reparacion.vehiculo.anio }} {{ reparacion.vehiculo.detalle.color }} {{ reparacion.detalle }}{% for item in reparacion.repuestos_utilizados.all %} {{ item.repuesto.nombre }} {{ item.repuesto.codigo }}{% endfor %}">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white border-0 pt-4 px-4">
+                        <div class="d-flex flex-column flex-md-row justify-content-between gap-3">
+                            <div>
+                                <span class="badge bg-dark mb-2">Reparación #{{ reparacion.id }}</span>
+                                <h2 class="h4 mb-1">
+                                    {{ reparacion.vehiculo.marca }} {{ reparacion.vehiculo.modelo }}
+                                </h2>
+                                <p class="text-muted mb-0">Patente: {{ reparacion.vehiculo.patente }}</p>
+                            </div>
+                            <div class="text-md-end">
+                                <span class="text-muted small d-block">Fecha de reparación</span>
+                                <strong>{{ reparacion.fecha|date:"d/m/Y" }}</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body px-4">
+                        <div class="row g-3 mb-3">
+                            <div class="col-6 col-md-3">
+                                <span class="text-muted small d-block">Marca</span>
+                                <strong>{{ reparacion.vehiculo.marca }}</strong>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <span class="text-muted small d-block">Modelo</span>
+                                <strong>{{ reparacion.vehiculo.modelo }}</strong>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <span class="text-muted small d-block">Año</span>
+                                <strong>{{ reparacion.vehiculo.anio }}</strong>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <span class="text-muted small d-block">Color</span>
+                                {% if reparacion.vehiculo.detalle %}
+                                    <strong>{{ reparacion.vehiculo.detalle.color }}</strong>
+                                {% else %}
+                                    <span class="text-muted">No informado</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="border-top pt-3 mb-3">
+                            <span class="text-muted small d-block mb-1">Detalle de reparación</span>
+                            <p class="mb-0">{{ reparacion.detalle }}</p>
+                        </div>
+
+                        <div class="accordion" id="repuestos-reparacion-{{ reparacion.id }}">
+                            <div class="accordion-item">
+                                <h3 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#detalle-repuestos-{{ reparacion.id }}"
+                                            aria-expanded="false"
+                                            aria-controls="detalle-repuestos-{{ reparacion.id }}">
+                                        Repuestos utilizados
+                                    </button>
+                                </h3>
+                                <div id="detalle-repuestos-{{ reparacion.id }}"
+                                     class="accordion-collapse collapse"
+                                     data-bs-parent="#repuestos-reparacion-{{ reparacion.id }}">
+                                    <div class="accordion-body">
+                                        {% with items=reparacion.repuestos_utilizados.all %}
+                                            {% if items %}
+                                                <div class="table-responsive">
+                                                    <table class="table table-sm align-middle mb-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Repuesto</th>
+                                                                <th>Código</th>
+                                                                <th class="text-center">Cantidad</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for item in items %}
+                                                                <tr>
+                                                                    <td>{{ item.repuesto.nombre }}</td>
+                                                                    <td>{{ item.repuesto.codigo }}</td>
+                                                                    <td class="text-center">{{ item.cantidad }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            {% else %}
+                                                <p class="text-muted mb-0">
+                                                    Esta reparación no tiene repuestos asociados.
+                                                </p>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 px-4 pb-4">
+                        <div class="d-flex flex-wrap justify-content-end gap-2">
+                            <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
+                            <button type="button" class="btn btn-outline-danger btn-sm" disabled>
+                                Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="sin-resultados" class="alert alert-info d-none mt-4">
+        No se encontraron reparaciones que coincidan con la búsqueda.
+    </div>
+{% else %}
+    <div class="alert alert-info shadow-sm" role="alert">
+        <h2 class="h5">No hay reparaciones registradas</h2>
+        <p class="mb-3">Todavía no existen reparaciones para mostrar en el historial.</p>
+        <a href="{% url 'registrar_reparacion' %}" class="btn btn-primary">Registrar la primera reparación</a>
+    </div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const searchInput = document.getElementById('buscar-reparaciones');
+    const clearButton = document.getElementById('limpiar-busqueda');
+    const repairItems = document.querySelectorAll('.reparacion-item');
+    const emptyResults = document.getElementById('sin-resultados');
+
+    function filterRepairs() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        let visibleItems = 0;
+
+        repairItems.forEach((item) => {
+            const isVisible = item.dataset.search.toLowerCase().includes(searchTerm);
+            item.classList.toggle('d-none', !isVisible);
+            if (isVisible) {
+                visibleItems += 1;
+            }
+        });
+
+        if (emptyResults) {
+            emptyResults.classList.toggle('d-none', visibleItems !== 0);
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', filterRepairs);
+    }
+
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            filterRepairs();
+            searchInput.focus();
+        });
+    }
+</script>
+{% endblock %}

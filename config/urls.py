@@ -14,6 +14,7 @@ urlpatterns = [
     path('usuarios/', include('usuarios.urls')),
     path('', views.menu_principal, name="menu-principal"),
     path('login/', include('usuarios.urls'), name="login"),
+    path('reparaciones/', include('reparacionesApp.urls'), name='home_reparaciones'),
 ]
 
 if settings.DEBUG:

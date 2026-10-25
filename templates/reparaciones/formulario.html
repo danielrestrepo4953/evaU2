@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if reparacion %}Editar reparación{% else %}Registrar reparación{% endif %}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-primary mb-2">Taller</span>
+        <h1 class="display-6 fw-semibold mb-1">
+            {% if reparacion %}Editar reparación{% else %}Registrar reparación{% endif %}
+        </h1>
+        <p class="text-muted mb-0">Completa la información del trabajo realizado y sus repuestos.</p>
+    </div>
+    <a href="{% url 'inicio_reparaciones' %}" class="btn btn-outline-primary">
+        Volver al listado
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <label for="{{ form.vehiculo.id_for_label }}" class="form-label fw-semibold">
+                    Vehículo
+                </label>
+                {{ form.vehiculo }}
+                {% for error in form.vehiculo.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.detalle.id_for_label }}" class="form-label fw-semibold">
+                    Detalle de reparación
+                </label>
+                {{ form.detalle }}
+                {% for error in form.detalle.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label fw-semibold mb-0">Repuestos utilizados</label>
+                </div>
+
+                {{ formset.management_form }}
+
+                {% if formset.non_form_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ formset.non_form_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Repuesto</th>
+                                <th style="min-width: 130px;">Cantidad</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="repuestos-formset-body">
+                            {% for repuesto_form in formset %}
+                                <tr class="repuesto-form-row">
+                                    <td>
+                                        {% for hidden_field in repuesto_form.hidden_fields %}
+                                            {{ hidden_field }}
+                                        {% endfor %}
+                                        {{ repuesto_form.repuesto }}
+                                        {% for error in repuesto_form.repuesto.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {{ repuesto_form.cantidad }}
+                                        {% for error in repuesto_form.cantidad.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if formset.can_delete %}
+                                            {{ repuesto_form.DELETE }}
+                                        {% endif %}
+                                        <button type="button" class="btn btn-outline-danger btn-sm eliminar-repuesto">
+                                            Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% if repuesto_form.non_field_errors %}
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="alert alert-danger mb-0">
+                                                {{ repuesto_form.non_field_errors }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="alert alert-info mb-0">
+                                            No hay filas de repuestos disponibles.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <template id="repuesto-form-template">
+                    <tr class="repuesto-form-row">
+                        <td>
+                            {% for hidden_field in formset.empty_form.hidden_fields %}
+                                {{ hidden_field }}
+                            {% endfor %}
+                            {{ formset.empty_form.repuesto }}
+                        </td>
+                        <td>
+                            {{ formset.empty_form.cantidad }}
+                        </td>
+                        <td>
+                            {% if formset.can_delete %}
+                                {{ formset.empty_form.DELETE }}
+                            {% endif %}
+                            <button type="button" class="btn btn-outline-danger btn-sm eliminar-repuesto">
+                                Quitar
+                            </button>
+                        </td>
+                    </tr>
+                </template>
+
+                <button type="button" id="agregar-repuesto" class="btn btn-outline-primary">
+                    Agregar repuesto
+                </button>
+
+                <div class="form-text">
+                    El formulario actual muestra una fila de repuesto porque el formset está configurado con
+                    <code>extra=1</code>.
+                </div>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+                <a href="{% url 'inicio_reparaciones' %}" class="btn btn-outline-secondary">
+                    Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary">Guardar reparación</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (() => {
+        const formsetBody = document.getElementById('repuestos-formset-body');
+        const formTemplate = document.getElementById('repuesto-form-template');
+        const addButton = document.getElementById('agregar-repuesto');
+        const totalFormsInput = document.querySelector(
+            'input[name$="-TOTAL_FORMS"]'
+        );
+        const initialFormsInput = document.querySelector(
+            'input[name$="-INITIAL_FORMS"]'
+        );
+
+        if (!formsetBody || !formTemplate || !addButton || !totalFormsInput) {
+            return;
+        }
+
+        function updateRowIndexes() {
+            const rows = formsetBody.querySelectorAll('.repuesto-form-row');
+
+            rows.forEach((row, index) => {
+                row.dataset.formIndex = index;
+
+                row.querySelectorAll('input, select, textarea, label').forEach((element) => {
+                    if (element.name) {
+                        element.name = element.name.replace(
+                            /-[0-9]+-/,
+                            `-${index}-`
+                        );
+                    }
+
+                    if (element.id) {
+                        element.id = element.id.replace(
+                            /-[0-9]+-/,
+                            `-${index}-`
+                        );
+                    }
+
+                    if (element.htmlFor) {
+                        element.htmlFor = element.htmlFor.replace(
+                            /-[0-9]+-/,
+                            `-${index}-`
+                        );
+                    }
+                });
+            });
+            totalFormsInput.value = rows.length;
+            totalFormsInput.value = rows.length;
+        }
+
+        function addRow() {
+            const newIndex = Number(totalFormsInput.value);
+            const rowHtml = formTemplate.innerHTML.replace(
+                /__prefix__/g,
+                newIndex
+            );
+
+            formsetBody.insertAdjacentHTML('beforeend', rowHtml);
+            totalFormsInput.value = newIndex + 1;
+        }
+
+        function removeRow(button) {
+            const row = button.closest('.repuesto-form-row');
+            const initialForms = initialFormsInput
+                ? Number(initialFormsInput.value)
+                : 0;
+            const rowIndex = Number(row.dataset.formIndex);
+
+            if (rowIndex < initialForms) {
+                const deleteInput = row.querySelector(
+                    'input[name$="-DELETE"]'
+                );
+
+                if (deleteInput) {
+                    deleteInput.checked = true;
+                    row.classList.add('d-none');
+                }
+
+                return;
+            }
+
+            row.remove();
+            updateRowIndexes();
+        }
+
+        addButton.addEventListener('click', addRow);
+
+        formsetBody.addEventListener('click', (event) => {
+            if (event.target.classList.contains('eliminar-repuesto')) {
+                removeRow(event.target);
+            }
+        });
+
+        updateRowIndexes();
+    })();
+</script>
+{% endblock %}

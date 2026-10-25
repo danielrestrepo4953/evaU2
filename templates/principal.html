@@ -4,55 +4,67 @@
 {% block title %}Menú principal{% endblock %}
 
 {% block content %}
-<div class="row g-4 justify-content-center align-items-stretch py-5 mt-3">
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex">
-        <div class="card shadow-sm border-0 w-100" style="max-width: 320px; width: 100%; margin: 0 auto;">
-            <img src="{% static 'images/vehiculos/car-lot.jpg' %}" class="card-img-top" alt="Gestión de vehículos" style="height: 200px; object-fit: cover;">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Gestión de vehículos</h5>
-                <p class="card-text text-muted">
-                    Consulta, revisa y administra los vehículos registrados en el taller de forma rápida y ordenada.
-                </p>
-                <a href="{% url 'inicio-vehiculos' %}" class="btn btn-primary mt-auto">Ingresar</a>
-            </div>
-        </div>
+<div class="py-5 mt-3">
+    <div class="text-center mb-4">
+        <h1 class="display-6 fw-semibold">Menú principal</h1>
+        <p class="text-muted mb-0">Selecciona una aplicación para continuar.</p>
     </div>
 
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex">
-        <div class="card shadow-sm border-0 w-100" style="max-width: 320px; width: 100%; margin: 0 auto;">
-            <img src="{% static 'images/repuestos/logo.jpg' %}" class="card-img-top" alt="Gestión de repuestos" style="height: 200px; object-fit: cover;">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Gestión de repuestos</h5>
-                <p class="card-text text-muted">
-                    Consulta, revisa y administra los repuestos disponibles en el taller de forma rápida y ordenada.
-                </p>
-                <a href="{% url 'home_repuestos' %}" class="btn btn-primary mt-auto">Ingresar</a>
+    <div class="overflow-auto pb-3">
+        <div class="d-flex flex-nowrap gap-4" style="min-width: max-content;">
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/vehiculos/car-lot.jpg' %}" class="card-img-top" alt="Gestión de vehículos" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Gestión de vehículos</h5>
+                    <p class="card-text text-muted">
+                        Consulta, revisa y administra los vehículos registrados en el taller de forma rápida y ordenada.
+                    </p>
+                    <a href="{% url 'inicio-vehiculos' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex">
-        <div class="card shadow-sm border-0 w-100" style="max-width: 320px; width: 100%; margin: 0 auto;">
-            <img src="{% static 'images/empleados/logo.jpg' %}" class="card-img-top" alt="Gestión de empleados" style="height: 200px; object-fit: cover;">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Gestión de empleados</h5>
-                <p class="card-text text-muted">
-                    Consulta, revisa y administra la información del personal del taller de forma rápida y ordenada.
-                </p>
-                <a href="{% url 'principal' %}" class="btn btn-primary mt-auto">Ingresar</a>
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/repuestos/logo.jpg' %}" class="card-img-top" alt="Gestión de repuestos" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Gestión de repuestos</h5>
+                    <p class="card-text text-muted">
+                        Consulta, revisa y administra los repuestos disponibles en el taller de forma rápida y ordenada.
+                    </p>
+                    <a href="{% url 'home_repuestos' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
             </div>
-        </div>
-    </div>
 
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 d-flex">
-        <div class="card shadow-sm border-0 w-100" style="max-width: 320px; width: 100%; margin: 0 auto;">
-            <img src="{% static 'images/clientes/logo.jpg' %}" class="card-img-top" alt="Gestión de clientes" style="height: 200px; object-fit: cover;">
-            <div class="card-body d-flex flex-column">
-                <h5 class="card-title">Gestión de clientes</h5>
-                <p class="card-text text-muted">
-                    Consulta, revisa y administra la información de los clientes del taller de forma rápida y ordenada.
-                </p>
-                <a href="{% url 'home_clientes' %}" class="btn btn-primary mt-auto">Ingresar</a>
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/empleados/logo.jpg' %}" class="card-img-top" alt="Gestión de empleados" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Gestión de empleados</h5>
+                    <p class="card-text text-muted">
+                        Consulta, revisa y administra la información del personal del taller de forma rápida y ordenada.
+                    </p>
+                    <a href="{% url 'principal' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/clientes/logo.jpg' %}" class="card-img-top" alt="Gestión de clientes" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Gestión de clientes</h5>
+                    <p class="card-text text-muted">
+                        Consulta, revisa y administra la información de los clientes del taller de forma rápida y ordenada.
+                    </p>
+                    <a href="{% url 'home_clientes' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/reparaciones/reparaciones.jpg' %}" class="card-img-top" alt="Registro de reparaciones" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Registro de reparaciones</h5>
+                    <p class="card-text text-muted">
+                        Registra y consulta las reparaciones realizadas a los vehículos y los repuestos utilizados.
+                    </p>
+                    <a href="{% url 'inicio_reparaciones' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
             </div>
         </div>
     </div>
