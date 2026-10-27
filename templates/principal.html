@@ -51,6 +51,19 @@
             </div>
             {% endif %}
 
+            {% if perms.auth.view_user %}
+            <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
+                <img src="{% static 'images/usuarios/foto_usuario_menú.jpg' %}" class="card-img-top" alt="Gestión de usuarios" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Gestión de usuarios</h5>
+                    <p class="card-text text-muted">
+                        Consulta y administra las cuentas de usuario de la aplicación de forma rápida y ordenada.
+                    </p>
+                    <a href="{% url 'inicio_usuarios' %}" class="btn btn-primary mt-auto">Ingresar</a>
+                </div>
+            </div>
+            {% endif %}
+
             {% if perms.clientesApp.view_cliente %}
             <div class="card shadow-sm border-0 flex-shrink-0" style="width: 320px;">
                 <img src="{% static 'images/clientes/logo.jpg' %}" class="card-img-top" alt="Gestión de clientes" style="height: 200px; object-fit: cover;">
