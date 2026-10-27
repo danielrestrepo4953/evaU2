@@ -9,7 +9,9 @@
         <h1 class="display-6 fw-semibold mb-1">Reparaciones registradas</h1>
         <p class="text-muted mb-0">Consulta el historial de trabajos realizados a los vehículos.</p>
     </div>
+    {% if perms.reparacionesApp.add_reparacion %}
     <a href="{% url 'registrar_reparacion' %}" class="btn btn-primary">Registrar reparación</a>
+    {% endif %}
 </div>
 
 <div class="card border-0 shadow-sm mb-4">
@@ -130,8 +132,12 @@
 
                     <div class="card-footer bg-white border-0 px-4 pb-4">
                         <div class="d-flex flex-wrap justify-content-end gap-2">
+                            {% if perms.reparacionesApp.change_reparacion %}
                             <a href="{% url 'cargar_editar_reparacion' reparacion.id %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                            {% endif %}
+                            {% if perms.reparacionesApp.delete_reparacion %}
                             <a href="{% url 'eliminar_reparacion' reparacion.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -146,7 +152,9 @@
     <div class="alert alert-info shadow-sm" role="alert">
         <h2 class="h5">No hay reparaciones registradas</h2>
         <p class="mb-3">Todavía no existen reparaciones para mostrar en el historial.</p>
+        {% if perms.reparacionesApp.add_reparacion %}
         <a href="{% url 'registrar_reparacion' %}" class="btn btn-primary">Registrar la primera reparación</a>
+        {% endif %}
     </div>
 {% endif %}
 {% endblock %}

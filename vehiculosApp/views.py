@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db import transaction
 import json
 from pathlib import Path
@@ -14,12 +14,15 @@ from vehiculosApp.forms import VehiculoForm, DetalleForm, detalle_formset
 def menu_principal(request):
     return render(request, 'principal.html')
 
+
 @login_required
+@permission_required('vehiculosApp.view_vehiculo', raise_exception=True)
 def inicio_vehiculos(request):
     vehiculos = Vehiculo.objects.all()
     return render(request, 'vehiculos/inicio.html', {'vehiculos': vehiculos})
 
 @login_required
+@permission_required('vehiculosApp.view_detalle', raise_exception=True)
 def detalle_vehiculo(request, vehiculo_id):
     
 
@@ -34,7 +37,9 @@ def detalle_vehiculo(request, vehiculo_id):
         'detalle': detalle,
     })
 
-@login_required   
+@login_required
+@permission_required('vehiculosApp.add_vehiculo', raise_exception=True)
+@permission_required('vehiculosApp.add_detalle', raise_exception=True)
 def registrar_vehiculo(request):
     if request.method == 'POST':
         form = VehiculoForm(request.POST, request.FILES)
@@ -61,6 +66,8 @@ def registrar_vehiculo(request):
     return render(request, 'vehiculos/formulario.html', contexto)
 
 @login_required
+@permission_required('vehiculosApp.change_vehiculo', raise_exception=True)
+@permission_required('vehiculosApp.change_detalle', raise_exception=True)
 def cargar_editar_vehiculo(request, vehiculo_id):
 
     vehiculo= get_object_or_404(Vehiculo, id= vehiculo_id)
@@ -77,6 +84,8 @@ def cargar_editar_vehiculo(request, vehiculo_id):
                    contexto)
 
 @login_required
+@permission_required('vehiculosApp.change_vehiculo', raise_exception=True)
+@permission_required('vehiculosApp.change_detalle', raise_exception=True)
 def editar_vehiculo(request, vehiculo_id):
     vehiculo = get_object_or_404(Vehiculo, id= vehiculo_id)
 
@@ -101,7 +110,8 @@ def editar_vehiculo(request, vehiculo_id):
     'vehiculo': vehiculo,
 })
 
-@login_required
+@permission_required('vehiculosApp.delete_vehiculo', raise_exception=True)
+@permission_required('vehiculosApp.delete_detalle', raise_exception=True)
 def eliminar_vehiculo(request, vehiculo_id):
     vehiculo= get_object_or_404(Vehiculo, id= vehiculo_id)
     detalle = get_object_or_404(Detalle, vehiculo=vehiculo)

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from reparacionesApp.models import Reparacion, RepuestoUtilizado
 from vehiculosApp.models import Vehiculo
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 from django.db import transaction
 from reparacionesApp.forms import ReparacionForm, RepuestoUtilizadoFormSet
@@ -9,6 +9,8 @@ from repuestosApp.models import repuestos
 
 # Create your views here.
 @login_required
+@permission_required('reparacionesApp.view_reparacion', raise_exception=True)
+@permission_required('reparacionesApp.view_repuestoutilizado', raise_exception=True)
 def principal_reparaciones(request):
     reparaciones = Reparacion.objects.all()
 # vehiculo = next((v for v in vehiculos if v.get('id') == reparaciones.vehiculo_id), None)
@@ -21,6 +23,8 @@ def principal_reparaciones(request):
     return render(request, 'reparaciones/inicio.html', datos)
 
 @login_required
+@permission_required('reparacionesApp.add_reparacion', raise_exception=True)
+@permission_required('reparacionesApp.add_repuestoutilizado', raise_exception=True)
 def registrar_reparacion(request):
     if request.method == 'POST':
         form = ReparacionForm(request.POST)
@@ -48,6 +52,8 @@ def registrar_reparacion(request):
     return render(request, 'reparaciones/formulario.html', contexto)
 
 @login_required
+@permission_required('reparacionesApp.change_reparacion', raise_exception=True)
+@permission_required('reparacionesApp.change_repuestoutilizado', raise_exception=True)
 def cargar_editar_reparacion(request, reparacion_id):
 
     reparacion= get_object_or_404(Reparacion, id= reparacion_id)
@@ -64,6 +70,8 @@ def cargar_editar_reparacion(request, reparacion_id):
                    contexto)
 
 @login_required
+@permission_required('reparacionesApp.change_reparacion', raise_exception=True)
+@permission_required('reparacionesApp.change_repuestoutilizado', raise_exception=True)
 def editar_reparacion(request, reparacion_id):
     reparacion = get_object_or_404(Reparacion, id= reparacion_id)
 
@@ -82,6 +90,8 @@ def editar_reparacion(request, reparacion_id):
             return redirect('inicio_reparaciones')
 
 @login_required
+@permission_required('reparacionesApp.delete_reparacion', raise_exception=True)
+@permission_required('reparacionesApp.delete_repuestoutilizado', raise_exception=True)
 def eliminar_reparacion(request, reparacion_id):
     reparacion= get_object_or_404(Reparacion, id= reparacion_id)
 

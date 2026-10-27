@@ -6,7 +6,9 @@
 {% block content %}
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4 page-header">
     <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+        {% if perms.vehiculosApp.add_vehiculo %}
         <a href="{% url 'registrar_vehiculo' %}" class="btn btn-success">Crear vehículo</a>
+        {% endif %}
         <h1 class="mb-0 display-6 fw-semibold">Vehículos registrados</h1>
     </div>
     <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
@@ -30,9 +32,15 @@
                     <li class="list-group-item px-0"><strong>Patente:</strong> {{ item.patente }}</li>
                 </ul>
                 <div class="d-flex flex-wrap gap-2 mt-auto">
+                    {% if perms.vehiculosApp.view_vehiculo %}
                     <a href="{% url 'detalle-vehiculo' item.id %}" class="btn btn-dark">Ver detalles</a>
+                    {% endif %}
+                    {% if perms.vehiculosApp.change_vehiculo %}
                     <a href="{% url 'editar-vehiculo' item.id %}" class="btn btn-warning">Editar</a>
+                    {% endif %}
+                    {% if perms.vehiculosApp.delete_vehiculo %}
                     <a href="{% url 'eliminar-vehiculo' item.id %}" class="btn btn-danger">Eliminar</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
