@@ -1,3 +1,5 @@
+from email.policy import default
+
 from django.db import models
 from django.utils import timezone
 from vehiculosApp.estado_choices import estados
@@ -7,7 +9,7 @@ class Vehiculo(models.Model):
     modelo = models.CharField(max_length=100)
     anio = models.IntegerField(verbose_name="Año de fabricación")
     patente = models.CharField(max_length=10, unique=True)
-    imagen = models.ImageField(upload_to='images/vehiculos/', null=True, blank=True)
+    imagen = models.ImageField(upload_to='images/vehiculos/', default='images/vehiculos/imagen_por_defecto.webp', null=True, blank=True)
     creado = models.DateTimeField(default=timezone.now, blank=True, null=True, verbose_name="Fecha de creación")
 
     def __str__(self):
@@ -25,7 +27,7 @@ class Detalle(models.Model):
     tipo_motor = models.CharField(max_length=50)
     tipo_caja = models.CharField(max_length=50)
     creado = models.DateTimeField(default=timezone.now, blank=True, null=True, verbose_name="Fecha de creación")
-    fecha_ultimo_servicio = models.DateField(default=timezone.now, blank=True, null=True)
+    fecha_ultimo_servicio = models.DateField(default=timezone.now)
     kilometraje = models.IntegerField()
     estado = models.CharField(max_length=50, choices=estados, verbose_name="Estado del vehículo")
     observaciones = models.TextField(max_length=500, blank=True, null=True)

@@ -1,0 +1,242 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% if vehiculo %}Editar vehículo{% else %}Registrar vehículo{% endif %}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+	<div>
+		<span class="badge bg-primary mb-2">Taller</span>
+		<h1 class="display-6 fw-semibold mb-1">
+			{% if vehiculo %}Editar vehículo{% else %}Registrar vehículo{% endif %}
+		</h1>
+		<p class="text-muted mb-0">Completa la información del vehículo y sus características.</p>
+	</div>
+	<a href="{% url 'inicio-vehiculos' %}" class="btn btn-outline-primary">
+		Volver al listado
+	</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+	<div class="card-body p-4 p-md-5">
+		<form method="post" action="{% if vehiculo %}{% url 'editar-vehiculo-cambios' vehiculo.id %}{% else %}{% url 'registrar_vehiculo' %}{% endif %}" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			{% if form.non_field_errors %}
+				<div class="alert alert-danger" role="alert">
+					{{ form.non_field_errors }}
+				</div>
+			{% endif %}
+
+			<h2 class="h5 border-bottom pb-2 mb-4">Información del vehículo</h2>
+
+			<div class="row g-4 mb-4">
+				<div class="col-12 col-lg-8">
+					<div class="row g-4">
+						<div class="col-12 col-md-6">
+					<label for="{{ form.marca.id_for_label }}" class="form-label fw-semibold">
+						{{ form.marca.label }}
+					</label>
+					<input type="text" name="{{ form.marca.html_name }}" id="{{ form.marca.id_for_label }}"
+					       value="{{ form.marca.value|default_if_none:'' }}" class="form-control"
+					       placeholder="Introduzca la marca del vehículo" required>
+					{% for error in form.marca.errors %}
+						<div class="invalid-feedback d-block">{{ error }}</div>
+					{% endfor %}
+						</div>
+
+						<div class="col-12 col-md-6">
+					<label for="{{ form.modelo.id_for_label }}" class="form-label fw-semibold">
+						{{ form.modelo.label }}
+					</label>
+					<input type="text" name="{{ form.modelo.html_name }}" id="{{ form.modelo.id_for_label }}"
+					       value="{{ form.modelo.value|default_if_none:'' }}" class="form-control"
+					       placeholder="Introduzca el modelo del vehículo" required>
+					{% for error in form.modelo.errors %}
+						<div class="invalid-feedback d-block">{{ error }}</div>
+					{% endfor %}
+						</div>
+
+						<div class="col-12 col-md-6">
+					<label for="{{ form.anio.id_for_label }}" class="form-label fw-semibold">
+						{{ form.anio.label }}
+					</label>
+					<input type="number" name="{{ form.anio.html_name }}" id="{{ form.anio.id_for_label }}"
+					       value="{{ form.anio.value|default_if_none:'' }}" class="form-control" required>
+					{% for error in form.anio.errors %}
+						<div class="invalid-feedback d-block">{{ error }}</div>
+					{% endfor %}
+						</div>
+
+						<div class="col-12 col-md-6">
+					<label for="{{ form.patente.id_for_label }}" class="form-label fw-semibold">
+						{{ form.patente.label }}
+					</label>
+					<input type="text" name="{{ form.patente.html_name }}" id="{{ form.patente.id_for_label }}"
+					       value="{{ form.patente.value|default_if_none:'' }}" class="form-control"
+					       placeholder="Introduzca la patente del vehículo" required>
+					{% for error in form.patente.errors %}
+						<div class="invalid-feedback d-block">{{ error }}</div>
+					{% endfor %}
+						</div>
+					</div>
+				</div>
+
+				<div class="col-12 col-lg-4">
+					<div class="border rounded-3 bg-light p-3 h-100">
+						<div class="ratio ratio-16x9 mb-3 overflow-hidden rounded-2 bg-white">
+							{% if vehiculo and vehiculo.imagen %}
+								<img id="vista-previa-vehiculo" src="{{ vehiculo.imagen.url }}" alt="Imagen del vehículo" class="w-100 h-100 object-fit-cover">
+							{% else %}
+								<img id="vista-previa-vehiculo" src="{% static 'images/vehiculos/imagen_por_defecto.webp' %}" alt="Imagen por defecto del vehículo" class="w-100 h-100 object-fit-cover">
+							{% endif %}
+						</div>
+					<label for="{{ form.imagen.id_for_label }}" class="form-label fw-semibold">
+						{{ form.imagen.label|default:'Imagen del vehículo' }}
+					</label>
+					<input type="file" name="{{ form.imagen.html_name }}" id="{{ form.imagen.id_for_label }}"
+					       class="form-control" accept="image/*">
+					<div class="form-text">Selecciona una imagen para actualizar la vista previa.</div>
+					{% for error in form.imagen.errors %}
+						<div class="invalid-feedback d-block">{{ error }}</div>
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+
+			<h2 class="h5 border-bottom pb-2 mb-4">Características del vehículo</h2>
+
+			{{ formset.management_form }}
+
+			{% if formset.non_form_errors %}
+				<div class="alert alert-danger" role="alert">
+					{{ formset.non_form_errors }}
+				</div>
+			{% endif %}
+
+			{% for detalle_form in formset %}
+				{% for hidden_field in detalle_form.hidden_fields %}
+					{{ hidden_field }}
+				{% endfor %}
+
+				{% if detalle_form.non_field_errors %}
+					<div class="alert alert-danger" role="alert">
+						{{ detalle_form.non_field_errors }}
+					</div>
+				{% endif %}
+
+				<div class="row g-4 mb-4">
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.color.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.color.label }}
+						</label>
+						<input type="text" name="{{ detalle_form.color.html_name }}" id="{{ detalle_form.color.id_for_label }}"
+						       value="{{ detalle_form.color.value|default_if_none:'' }}" class="form-control"
+						       placeholder="Introduzca el color del vehículo" required>
+						{% for error in detalle_form.color.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.tipo_motor.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.tipo_motor.label }}
+						</label>
+						<input type="text" name="{{ detalle_form.tipo_motor.html_name }}" id="{{ detalle_form.tipo_motor.id_for_label }}"
+						       value="{{ detalle_form.tipo_motor.value|default_if_none:'' }}" class="form-control"
+						       placeholder="Introduzca el tipo de motor" required>
+						{% for error in detalle_form.tipo_motor.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.tipo_caja.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.tipo_caja.label }}
+						</label>
+						<input type="text" name="{{ detalle_form.tipo_caja.html_name }}" id="{{ detalle_form.tipo_caja.id_for_label }}"
+						       value="{{ detalle_form.tipo_caja.value|default_if_none:'' }}" class="form-control"
+						       placeholder="Introduzca el tipo de caja" required>
+						{% for error in detalle_form.tipo_caja.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.fecha_ultimo_servicio.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.fecha_ultimo_servicio.label }}
+						</label>
+						<input type="date" name="{{ detalle_form.fecha_ultimo_servicio.html_name }}" id="{{ detalle_form.fecha_ultimo_servicio.id_for_label }}"
+						       value="{{ detalle_form.fecha_ultimo_servicio.value|date:'Y-m-d' }}" class="form-control" required>
+						{% for error in detalle_form.fecha_ultimo_servicio.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.kilometraje.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.kilometraje.label }}
+						</label>
+						<input type="number" name="{{ detalle_form.kilometraje.html_name }}" id="{{ detalle_form.kilometraje.id_for_label }}"
+						       value="{{ detalle_form.kilometraje.value|default_if_none:'' }}" class="form-control" required>
+						{% for error in detalle_form.kilometraje.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12 col-md-4">
+						<label for="{{ detalle_form.estado.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.estado.label }}
+						</label>
+						{{ detalle_form.estado }}
+						{% for error in detalle_form.estado.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+
+					<div class="col-12">
+						<label for="{{ detalle_form.observaciones.id_for_label }}" class="form-label fw-semibold">
+							{{ detalle_form.observaciones.label }}
+						</label>
+						<textarea name="{{ detalle_form.observaciones.html_name }}" id="{{ detalle_form.observaciones.id_for_label }}"
+						          class="form-control" rows="4" placeholder="Ingrese observaciones adicionales (opcional)">{{ detalle_form.observaciones.value|default_if_none:'' }}</textarea>
+						{% for error in detalle_form.observaciones.errors %}
+							<div class="invalid-feedback d-block">{{ error }}</div>
+						{% endfor %}
+					</div>
+				</div>
+			{% endfor %}
+
+			<div class="d-flex flex-column flex-sm-row justify-content-end gap-2 pt-3 border-top">
+				<a href="{% url 'inicio-vehiculos' %}" class="btn btn-outline-secondary">
+					Cancelar
+				</a>
+				<button type="submit" class="btn btn-primary">
+					{% if vehiculo %}Guardar cambios{% else %}Registrar vehículo{% endif %}
+				</button>
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+	const imagenInput = document.getElementById('{{ form.imagen.id_for_label }}');
+	const vistaPrevia = document.getElementById('vista-previa-vehiculo');
+	const imagenPorDefecto = "{% static 'images/vehiculos/imagen_por_defecto.webp' %}";
+
+	if (imagenInput && vistaPrevia) {
+		imagenInput.addEventListener('change', () => {
+			const archivo = imagenInput.files[0];
+
+			if (!archivo) {
+				vistaPrevia.src = imagenPorDefecto;
+				return;
+			}
+
+			vistaPrevia.src = URL.createObjectURL(archivo);
+		});
+	}
+</script>
+{% endblock %}

@@ -22,4 +22,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('inicio/', vehiculos_views.inicio_vehiculos, name='inicio-vehiculos'),
     path('detalle/<int:vehiculo_id>/', vehiculos_views.detalle_vehiculo, name='detalle-vehiculo'),
+    path('registrar/', vehiculos_views.registrar_vehiculo, name='registrar_vehiculo'),
+    path('editar/<int:vehiculo_id>/', vehiculos_views.cargar_editar_vehiculo, name='editar-vehiculo'),
+    path('editarcambios/<int:vehiculo_id>/', vehiculos_views.editar_vehiculo, name='editar-vehiculo-cambios'),
+    path('eliminar/<int:vehiculo_id>/', vehiculos_views.eliminar_vehiculo, name='eliminar-vehiculo'),
 ]

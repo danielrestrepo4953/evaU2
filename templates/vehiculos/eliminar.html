@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar vehículo{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+	<div>
+		<span class="badge bg-danger mb-2">Taller</span>
+		<h1 class="display-6 fw-semibold mb-1">Eliminar vehículo</h1>
+		<p class="text-muted mb-0">Confirma si deseas eliminar este vehículo del registro.</p>
+	</div>
+	<a href="{% url 'inicio-vehiculos' %}" class="btn btn-outline-primary">
+		Volver al listado
+	</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+	<div class="card-body p-4 p-md-5">
+		<div class="alert alert-warning" role="alert">
+			Esta acción eliminará también los detalles asociados y no se puede deshacer.
+		</div>
+
+		<div class="border-top border-bottom py-4 mb-4">
+			<span class="badge bg-dark mb-2">Vehículo #{{ vehiculo.id }}</span>
+			<h2 class="h4 mb-1">
+				{{ vehiculo.marca }} {{ vehiculo.modelo }}
+			</h2>
+			<div class="row g-3 mt-2">
+				<div class="col-12 col-md-4">
+					<span class="text-muted small d-block">Patente</span>
+					<strong>{{ vehiculo.patente }}</strong>
+				</div>
+				<div class="col-12 col-md-4">
+					<span class="text-muted small d-block">Año</span>
+					<strong>{{ vehiculo.anio }}</strong>
+				</div>
+				<div class="col-12 col-md-4">
+					<span class="text-muted small d-block">Marca</span>
+					<strong>{{ vehiculo.marca }}</strong>
+				</div>
+			</div>
+		</div>
+
+		<p class="mb-4">¿Estás seguro de que deseas eliminar este vehículo?</p>
+
+		<div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+			<a href="{% url 'inicio-vehiculos' %}" class="btn btn-outline-secondary">
+				Cancelar
+			</a>
+			<form method="post" action="{{ request.path }}">
+				{% csrf_token %}
+				<button type="submit" class="btn btn-danger w-100">
+					Eliminar vehículo
+				</button>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock %}

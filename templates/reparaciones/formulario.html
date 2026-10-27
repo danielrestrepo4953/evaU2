@@ -18,7 +18,7 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-body p-4 p-md-5">
-        <form method="post">
+        <form method="post" action="{% if reparacion %}{% url 'editar_reparacion' reparacion.id %}{% else %}{% url 'registrar_reparacion' %}{% endif %}">
             {% csrf_token %}
 
             {% if form.non_field_errors %}

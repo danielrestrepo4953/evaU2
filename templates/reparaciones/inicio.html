@@ -130,10 +130,8 @@
 
                     <div class="card-footer bg-white border-0 px-4 pb-4">
                         <div class="d-flex flex-wrap justify-content-end gap-2">
-                            <a href="#" class="btn btn-outline-primary btn-sm">Editar</a>
-                            <button type="button" class="btn btn-outline-danger btn-sm" disabled>
-                                Eliminar
-                            </button>
+                            <a href="{% url 'cargar_editar_reparacion' reparacion.id %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                            <a href="{% url 'eliminar_reparacion' reparacion.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
                         </div>
                     </div>
                 </div>

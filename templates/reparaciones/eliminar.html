@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar reparación{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-danger mb-2">Taller</span>
+        <h1 class="display-6 fw-semibold mb-1">Eliminar reparación</h1>
+        <p class="text-muted mb-0">Confirma si deseas eliminar este registro del historial.</p>
+    </div>
+    <a href="{% url 'inicio_reparaciones' %}" class="btn btn-outline-primary">
+        Volver al listado
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <div class="alert alert-warning" role="alert">
+            Esta acción no se puede deshacer.
+        </div>
+
+        <div class="border-top border-bottom py-4 mb-4">
+            <span class="badge bg-dark mb-2">Reparación #{{ reparacion.id }}</span>
+            <h2 class="h4 mb-1">
+                {{ reparacion.vehiculo.marca }} {{ reparacion.vehiculo.modelo }}
+            </h2>
+            <p class="text-muted mb-3">Patente: {{ reparacion.vehiculo.patente }}</p>
+            <span class="text-muted small d-block mb-1">Detalle de reparación</span>
+            <p class="mb-0">{{ reparacion.detalle }}</p>
+        </div>
+
+        <p class="mb-4">¿Estás seguro de que deseas eliminar esta reparación?</p>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+            <a href="{% url 'inicio_reparaciones' %}" class="btn btn-outline-secondary">
+                Cancelar
+            </a>
+            <form method="post" action="{% url 'eliminar_reparacion' reparacion.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">
+                    Eliminar reparación
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
