@@ -1,0 +1,115 @@
+{% extends 'dashboards/dashboard_base.html' %}
+
+{% block title %}Dashboard del administrador{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+	<div>
+		<span class="badge bg-primary mb-2">Resumen del taller</span>
+		<h1 class="display-6 fw-semibold mb-1">Dashboard del administrador</h1>
+		<p class="text-muted mb-0">Consulta rápida del estado actual de los registros.</p>
+	</div>
+</div>
+
+<div class="row g-4 mb-4">
+	<div class="col-12 col-md-6 col-xl-3">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<span class="text-muted small d-block mb-2">Vehículos registrados</span>
+				<div class="d-flex justify-content-between align-items-end">
+					<strong class="display-6 fw-semibold">{{ total_vehiculos|default:"0" }}</strong>
+					<span class="badge text-bg-primary">Vehículos</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-6 col-xl-3">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<span class="text-muted small d-block mb-2">Vehículos en mal estado</span>
+				<div class="d-flex justify-content-between align-items-end">
+					<strong class="display-6 fw-semibold text-danger">{{ vehiculos_mal_estado|default:"0" }}</strong>
+					<span class="badge text-bg-danger">Revisar</span>
+				</div>
+				<p class="text-muted small mb-0 mt-2">Requieren atención del taller.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-6 col-xl-3">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<span class="text-muted small d-block mb-2">Repuestos disponibles</span>
+				<div class="d-flex justify-content-between align-items-end">
+					<strong class="display-6 fw-semibold">{{ total_repuestos|default:"0" }}</strong>
+					<span class="badge text-bg-success">Stock</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-6 col-xl-3">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<span class="text-muted small d-block mb-2">Reparaciones registradas</span>
+				<div class="d-flex justify-content-between align-items-end">
+					<strong class="display-6 fw-semibold">{{ total_reparaciones|default:"0" }}</strong>
+					<span class="badge text-bg-warning">Reparaciones</span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-md-6 col-xl-3">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<span class="text-muted small d-block mb-2">Usuarios registrados</span>
+				<div class="d-flex justify-content-between align-items-end">
+					<strong class="display-6 fw-semibold">{{ total_usuarios|default:"0" }}</strong>
+					<span class="badge text-bg-info">Usuarios</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row g-4">
+	<div class="col-12 col-lg-8">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<h2 class="h5 mb-1">Resumen de registros</h2>
+				<p class="text-muted mb-4">Cantidad de personas registradas en el sistema.</p>
+
+				<div class="row g-3">
+					<div class="col-12 col-md-6">
+						<div class="border rounded-3 p-3 h-100">
+							<span class="text-muted small d-block">Empleados</span>
+							<strong class="h3 mb-0">{{ total_empleados|default:"0" }}</strong>
+						</div>
+					</div>
+					<div class="col-12 col-md-6">
+						<div class="border rounded-3 p-3 h-100">
+							<span class="text-muted small d-block">Clientes</span>
+							<strong class="h3 mb-0">{{ total_clientes|default:"0" }}</strong>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12 col-lg-4">
+		<div class="card border-0 shadow-sm h-100">
+			<div class="card-body p-4">
+				<h2 class="h5 mb-1">Estado de vehículos</h2>
+				<p class="text-muted mb-4">Resumen de vehículos que requieren atención.</p>
+				<div class="alert alert-danger mb-0" role="alert">
+					<strong>{{ vehiculos_mal_estado|default:"0" }}</strong>
+					vehículo(s) en mal estado.
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

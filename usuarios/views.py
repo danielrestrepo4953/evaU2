@@ -4,7 +4,7 @@ from django.db import transaction
 from django.contrib.auth import get_user_model
 from usuarios.forms import UsuarioCreationForm, UsuarioUpdateForm
 from django.contrib import messages
-
+from django import forms
 # Create your views here.
 @login_required
 @permission_required('auth.view_user', raise_exception=True)
@@ -33,6 +33,10 @@ def cargar_editar_usuario(request,usuario_id):
     User = get_user_model()
     usuario = User.objects.get(id=usuario_id)
     form = UsuarioCreationForm(instance=usuario)
+
+    if usuario.groups.first() == request.user.groups.first():
+        messages.error(request, "No puedes modificar tu propio usuario o usuarios de tu mismo grupo.")
+        return redirect('inicio_usuarios')
     return render(request, 'usuarios/crear_usuario.html', {'form': form, 'usuario': usuario})
 
 @login_required
@@ -60,6 +64,10 @@ def editar_usuario(request, usuario_id):
 def eliminar_usuario(request, usuario_id):
     User = get_user_model()
     usuario = get_object_or_404(User, id=usuario_id)
+
+    if usuario.groups.first() == request.user.groups.first():
+            messages.error(request, "No puedes eliminar tu propio usuario o usuarios de tu mismo grupo.")
+            return redirect('inicio_usuarios')
 
     if request.method == 'POST':
         usuario.delete()

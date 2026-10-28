@@ -2,6 +2,19 @@
 
 {% block title %}Usuarios de la aplicación{% endblock %}
 
+{% block cabecera %}
+<style>
+	.alert-error {
+		--bs-alert-color: #842029;
+		--bs-alert-bg: #f8d7da;
+		--bs-alert-border-color: #f1aeb5;
+		color: var(--bs-alert-color);
+		background-color: var(--bs-alert-bg);
+		border-color: var(--bs-alert-border-color);
+	}
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
 	<div>
