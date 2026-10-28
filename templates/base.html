@@ -31,6 +31,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home_clientes' %}">Clientes</a>
                     </li>
+                    {% if perms.asignacionesApp.view_asignacion %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inicio_asignaciones' %}">Asignaciones</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'menu-principal' %}">Inicio</a>
                     </li>
