@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Nueva contraseña{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-5">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                {% if validlink %}
+                    <h1 class="h3 mb-3">Establecer nueva contraseña</h1>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {{ form.as_p }}
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            Cambiar contraseña
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-danger">
+                        El enlace no es válido o ya expiró.
+                    </div>
+
+                    <a
+                        href="{% url 'password_reset' %}"
+                        class="btn btn-primary"
+                    >
+                        Solicitar otro enlace
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

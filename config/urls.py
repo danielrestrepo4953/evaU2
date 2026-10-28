@@ -13,10 +13,11 @@ urlpatterns = [
     path('clientes/', include('clientesApp.urls')),
     path('usuarios/', include('usuarios.urls')),
     path('principal/', views.menu_principal, name="menu-principal"),
-    path('login/', include('usuarios.urls'), name="login"),
     path('reparaciones/', include('reparacionesApp.urls'), name='home_reparaciones'),
     path('usuarios/', usuarios_views.principal_usuarios, name='inicio_usuarios'),
-    path('', include('dashboardApp.urls'), name= 'dashboard_inicio')
+    path('', include('dashboardApp.urls'), name= 'dashboard_inicio'),
+    path('recuperar-contrasena/', include('recuperarcontrasenaApp.urls'),
+),
 ]
 
 if settings.DEBUG:

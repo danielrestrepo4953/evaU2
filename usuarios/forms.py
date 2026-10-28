@@ -19,6 +19,20 @@ class UsuarioCreationForm(UserCreationForm):
         empty_label='Seleccione un grupo',
     )
 
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+
+        if User.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError(
+                'Ya existe un usuario registrado con este correo.'
+            )
+
+        return email
+
+    
+
+
+
     class Meta:
         model = User
         fields = (
@@ -45,6 +59,20 @@ class UsuarioUpdateForm(forms.ModelForm):
         empty_label="Seleccione un grupo",
     )
 
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip().lower()
+
+        usuario_existente = User.objects.filter(
+            email__iexact=email
+        ).exclude(pk=self.instance.pk).exists()
+
+        if usuario_existente:
+            raise forms.ValidationError(
+                'Ya existe otro usuario registrado con este correo.'
+            )
+
+        return email
+
     class Meta:
         model = User
         fields = (
@@ -55,6 +83,7 @@ class UsuarioUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['email'].required = True
 
         if self.instance and self.instance.pk:
             self.fields["password1"].required = False
