@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Asociación Cliente - Vehículo{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Vehículos Asignados a Clientes</h2>
+        <a href="{% url 'asociar_cliente_vehiculo' %}" class="btn btn-primary">Asignar Vehículo a Cliente</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Vehículo</th>
+                        <th>Fecha Registro</th>
+                        <th>Observación</th>
+                        <th class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in asociaciones %}
+                    <tr>
+                        <td class="fw-semibold">{{ item.cliente.nombre }} {{ item.cliente.apellido }}</td>
+                        <td>{{ item.vehiculo }}</td>
+                        <td>{{ item.fecha_registro|date:"d/m/Y" }}</td>
+                        <td>{{ item.observacion|default:"Sin observaciones" }}</td>
+                        <td class="text-end pe-4">
+                            <a href="{% url 'editar_asociacion' item.id %}" class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                            <a href="{% url 'eliminar_asociacion' item.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">No hay relaciones Cliente-Vehículo registradas aún.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
