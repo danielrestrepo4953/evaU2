@@ -20,7 +20,7 @@ def crear_usuario(request):
         form = UsuarioCreationForm(request.POST)
         if form.is_valid():
             usuario = form.save()
-            usuario.groups.set(form.cleaned_data['grupo'])
+            usuario.groups.set([form.cleaned_data['grupo']])
             messages.success(request, "El usuario ha sido creado exitosamente. ")
             return redirect('inicio_usuarios')
     else:
