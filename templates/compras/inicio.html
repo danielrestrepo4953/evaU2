@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Compras de repuestos{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-primary mb-2">Inventario</span>
+        <h1 class="display-6 fw-semibold mb-1">Compras de repuestos</h1>
+        <p class="text-muted mb-0">Registro de compras realizadas a proveedores.</p>
+    </div>
+    <a href="{% url 'registrar_compra' %}" class="btn btn-primary">Registrar compra</a>
+</div>
+
+{% if compras %}
+    <div class="row g-4">
+        {% for compra in compras %}
+            <div class="col-12">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-0 pt-4 px-4 d-flex flex-column flex-md-row justify-content-between gap-3">
+                        <div>
+                            <span class="badge bg-dark mb-2">Compra #{{ compra.id }}</span>
+                            <h2 class="h4 mb-1">{{ compra.cliente }}</h2>
+                            <p class="text-muted mb-0">Proveedor: {{ compra.proveedor }}</p>
+                        </div>
+                        <div class="text-md-end">
+                            <span class="text-muted small d-block">Fecha</span>
+                            <strong>{{ compra.fecha|date:"d/m/Y" }}</strong>
+                        </div>
+                    </div>
+
+                    <div class="card-body px-4">
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Repuesto</th>
+                                        <th>Código</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-end">Precio unitario</th>
+                                        <th class="text-end">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in compra.detalles_compra.all %}
+                                        <tr>
+                                            <td>{{ item.repuesto.nombre }}</td>
+                                            <td>{{ item.repuesto.codigo }}</td>
+                                            <td class="text-center">{{ item.cantidad }}</td>
+                                            <td class="text-end">${{ item.precio_unitario|floatformat:0 }}</td>
+                                            <td class="text-end">${{ item.subtotal|floatformat:0 }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-muted">Sin repuestos asociados.</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4" class="text-end fw-semibold">Total</td>
+                                        <td class="text-end fw-bold">${{ compra.total|floatformat:0 }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info shadow-sm" role="alert">
+        <h2 class="h5">No hay compras registradas</h2>
+        <p class="mb-3">Todavía no existen compras para mostrar.</p>
+        <a href="{% url 'registrar_compra' %}" class="btn btn-primary">Registrar la primera compra</a>
+    </div>
+{% endif %}
+{% endblock %}
