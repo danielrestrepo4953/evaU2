@@ -16,8 +16,8 @@ urlpatterns = [
     path('login/', include('usuarios.urls'), name="login"),
     path('reparaciones/', include('reparacionesApp.urls'), name='home_reparaciones'),
     path('usuarios/', usuarios_views.principal_usuarios, name='inicio_usuarios'),
-    path('', include('dashboardApp.urls'), name= 'dashboard_inicio')
-]
+    path('', include('dashboardApp.urls'), name= 'dashboard_inicio'),
+    path('clientes-vehiculos/', include('clientesVehiculosApp.urls')),]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
