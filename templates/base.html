@@ -17,23 +17,59 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse" id="navbarNav" style="min-width: 0;">
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center w-100 gap-lg-2">
+                    <div class="overflow-auto flex-grow-1" style="min-width: 0;">
+                        <ul class="navbar-nav flex-row flex-nowrap" style="min-width: max-content;">
+                    {% if perms.vehiculosApp.view_vehiculo %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'inicio-vehiculos' %}">Vehículos</a>
                     </li>
+                    {% endif %}
+                    {% if perms.repuestosApp.view_repuestos %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home_repuestos' %}">Repuestos</a>
+                    </li>
+                    {% endif %}
+                    {% if perms.empleadosApp.view_empleado %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inicio_compras' %}">Compras</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'principal' %}">Empleados</a>
                     </li>
+                    {% endif %}
+                    {% if perms.clientesApp.view_cliente %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'home_clientes' %}">Clientes</a>
                     </li>
+                    {% endif %}
+                    {% if perms.asignacionesApp.view_asignacion %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inicio_asignaciones' %}">Asignaciones</a>
+                    </li>
+                    {% endif %}
+                    {% if perms.clientesVehiculosApp.view_clientevehiculo %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'lista_clientes_vehiculos' %}">Clientes - Vehículos</a>
+                    </li>
+                    {% endif %}
+                    {% if perms.reparacionesApp.view_reparacion and perms.reparacionesApp.view_repuestoutilizado %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inicio_reparaciones' %}">Reparaciones</a>
+                    </li>
+                    {% endif %}
+                    {% if perms.auth.view_user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inicio_usuarios' %}">Usuarios</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'menu-principal' %}">Inicio</a>
                     </li>
+                        </ul>
+                    </div>
+                    <ul class="navbar-nav flex-row flex-nowrap ms-lg-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'redireccionar_usuario' %}">Dashboard</a>
@@ -54,7 +90,8 @@
                             <a class="nav-link" href="{% url 'login' %}">Iniciar sesión</a>
                         </li>
                     {% endif %}
-                </ul>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>

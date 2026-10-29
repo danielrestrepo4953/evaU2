@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Cliente{% endblock %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 650px;">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h3 class="mb-0 fw-semibold h4">Editar Cliente: {{ cliente.nombre }} {{ cliente.apellido }}</h3>
+        </div>
+        <div class="card-body p-4">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Nombre</label>
+                        {{ form.nombre }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Apellido</label>
+                        {{ form.apellido }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-medium">Correo electrónico</label>
+                        {{ form.correo }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Cargo</label>
+                        {{ form.cargo }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-medium">Teléfono</label>
+                        {{ form.telefono }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-medium">Dirección</label>
+                        {{ form.direccion }}
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-medium">Saldo de cuenta</label>
+                        {{ form.saldo }}
+                    </div>
+
+                    <!-- Sección estilizada para la imagen -->
+                    <div class="col-12 mt-4">
+                        <label class="form-label fw-medium">Imagen del cliente</label>
+                        
+                        {% if cliente.imagen %}
+                            <div class="d-flex align-items-center gap-3 mb-3 p-3 border rounded bg-light">
+                                <img src="{{ cliente.imagen.url }}" alt="{{ cliente.nombre }}" class="rounded border shadow-sm" style="width: 75px; height: 75px; object-fit: cover;">
+                                <div>
+                                    <span class="d-block fw-medium text-dark small mb-1">Fotografía actual</span>
+                                    <div class="form-check text-danger">
+                                        <input class="form-check-input" type="checkbox" name="imagen-clear" id="imagen-clear_id">
+                                        <label class="form-check-label small" for="imagen-clear_id">Eliminar esta imagen</label>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <input type="file" name="imagen" class="form-control" id="id_imagen">
+                        <div class="form-text">Selecciona un archivo si deseas cambiar la foto del cliente.</div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-4 pt-3 border-top">
+                    <button type="submit" class="btn btn-warning px-4">Guardar Cambios</button>
+                    <a href="{% url 'home_clientes' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

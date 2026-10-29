@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar compra{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-primary mb-2">Inventario</span>
+        <h1 class="display-6 fw-semibold mb-1">Registrar compra</h1>
+        <p class="text-muted mb-0">Completa la información del proveedor y los repuestos comprados.</p>
+    </div>
+    <a href="{% url 'inicio_compras' %}" class="btn btn-outline-primary">Volver al listado</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="mb-4">
+                <label for="{{ form.cliente.id_for_label }}" class="form-label fw-semibold">
+                    Cliente
+                </label>
+                {{ form.cliente }}
+                {% for error in form.cliente.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.proveedor.id_for_label }}" class="form-label fw-semibold">
+                    Proveedor
+                </label>
+                {{ form.proveedor }}
+                {% for error in form.proveedor.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label fw-semibold mb-0">Repuestos comprados</label>
+                </div>
+
+                {{ formset.management_form }}
+
+                {% if formset.non_form_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ formset.non_form_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr>
+                                <th>Repuesto</th>
+                                <th style="min-width: 110px;">Cantidad</th>
+                                <th style="min-width: 130px;">Precio unitario</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="detalles-formset-body">
+                            {% for detalle_form in formset %}
+                                <tr class="detalle-form-row">
+                                    <td>
+                                        {% for hidden_field in detalle_form.hidden_fields %}
+                                            {{ hidden_field }}
+                                        {% endfor %}
+                                        {{ detalle_form.repuesto }}
+                                        {% for error in detalle_form.repuesto.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {{ detalle_form.cantidad }}
+                                        {% for error in detalle_form.cantidad.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {{ detalle_form.precio_unitario }}
+                                        {% for error in detalle_form.precio_unitario.errors %}
+                                            <div class="invalid-feedback d-block">{{ error }}</div>
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        {% if formset.can_delete %}
+                                            {{ detalle_form.DELETE }}
+                                        {% endif %}
+                                        <button type="button" class="btn btn-outline-danger btn-sm eliminar-detalle">
+                                            Quitar
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% if detalle_form.non_field_errors %}
+                                    <tr>
+                                        <td colspan="4">
+                                            <div class="alert alert-danger mb-0">
+                                                {{ detalle_form.non_field_errors }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="alert alert-info mb-0">
+                                            No hay filas de repuestos disponibles.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <template id="detalle-form-template">
+                    <tr class="detalle-form-row">
+                        <td>
+                            {% for hidden_field in formset.empty_form.hidden_fields %}
+                                {{ hidden_field }}
+                            {% endfor %}
+                            {{ formset.empty_form.repuesto }}
+                        </td>
+                        <td>
+                            {{ formset.empty_form.cantidad }}
+                        </td>
+                        <td>
+                            {{ formset.empty_form.precio_unitario }}
+                        </td>
+                        <td>
+                            {% if formset.can_delete %}
+                                {{ formset.empty_form.DELETE }}
+                            {% endif %}
+                            <button type="button" class="btn btn-outline-danger btn-sm eliminar-detalle">
+                                Quitar
+                            </button>
+                        </td>
+                    </tr>
+                </template>
+
+                <button type="button" id="agregar-detalle" class="btn btn-outline-primary">
+                    Agregar repuesto
+                </button>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-end gap-2">
+                <a href="{% url 'inicio_compras' %}" class="btn btn-outline-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Guardar compra</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    (() => {
+        const formsetBody = document.getElementById('detalles-formset-body');
+        const formTemplate = document.getElementById('detalle-form-template');
+        const addButton = document.getElementById('agregar-detalle');
+        const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        const initialFormsInput = document.querySelector('input[name$="-INITIAL_FORMS"]');
+
+        if (!formsetBody || !formTemplate || !addButton || !totalFormsInput) {
+            return;
+        }
+
+        function updateRowIndexes() {
+            const rows = formsetBody.querySelectorAll('.detalle-form-row');
+
+            rows.forEach((row, index) => {
+                row.dataset.formIndex = index;
+
+                row.querySelectorAll('input, select, textarea, label').forEach((element) => {
+                    if (element.name) {
+                        element.name = element.name.replace(/-[0-9]+-/, `-${index}-`);
+                    }
+
+                    if (element.id) {
+                        element.id = element.id.replace(/-[0-9]+-/, `-${index}-`);
+                    }
+
+                    if (element.htmlFor) {
+                        element.htmlFor = element.htmlFor.replace(/-[0-9]+-/, `-${index}-`);
+                    }
+                });
+            });
+
+            totalFormsInput.value = rows.length;
+        }
+
+        function addRow() {
+            const newIndex = Number(totalFormsInput.value);
+            const rowHtml = formTemplate.innerHTML.replace(/__prefix__/g, newIndex);
+
+            formsetBody.insertAdjacentHTML('beforeend', rowHtml);
+            totalFormsInput.value = newIndex + 1;
+        }
+
+        function removeRow(button) {
+            const row = button.closest('.detalle-form-row');
+            const initialForms = initialFormsInput ? Number(initialFormsInput.value) : 0;
+            const rowIndex = Number(row.dataset.formIndex);
+
+            if (rowIndex < initialForms) {
+                const deleteInput = row.querySelector('input[name$="-DELETE"]');
+
+                if (deleteInput) {
+                    deleteInput.checked = true;
+                    row.classList.add('d-none');
+                }
+
+                return;
+            }
+
+            row.remove();
+            updateRowIndexes();
+        }
+
+        addButton.addEventListener('click', addRow);
+
+        formsetBody.addEventListener('click', (event) => {
+            if (event.target.classList.contains('eliminar-detalle')) {
+                removeRow(event.target);
+            }
+        });
+
+        updateRowIndexes();
+    })();
+</script>
+{% endblock %}

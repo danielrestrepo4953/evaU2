@@ -8,9 +8,7 @@
     <h1 class="mb-0 display-6 fw-semibold">Clientes registrados</h1>
     
     <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-primary" type="button">Crear</button>
-        <button class="btn btn-warning" type="button">Editar</button>
-        <button class="btn btn-danger" type="button">Eliminar</button>
+        <a href="{% url 'crear_cliente' %}" class="btn btn-primary">Crear</a>
         <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
     </div>
 </div>
@@ -32,7 +30,11 @@
                     <li class="list-group-item px-0"><strong>Cargo:</strong> {{ c.cargo }}</li>
                     <li class="list-group-item px-0"><strong>Teléfono:</strong> {{ c.telefono }}</li>
                 </ul>
-                <a href="{% url 'detalle_cliente' c.nombre %}" class="btn btn-dark mt-auto">Ver detalles</a>
+                <div class="d-flex gap-2 mt-auto">
+                    <a href="{% url 'detalle_cliente' c.nombre %}" class="btn btn-dark btn-sm flex-fill">Ver detalles</a>
+                    <a href="{% url 'editar_cliente' c.id %}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{% url 'eliminar_cliente' c.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
             </div>
         </div>
     </div>

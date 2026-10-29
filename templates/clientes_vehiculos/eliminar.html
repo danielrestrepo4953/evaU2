@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Asociación{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 500px;">
+    <div class="card border-danger shadow-sm">
+        <div class="card-body p-4 text-center">
+            <h4 class="card-title text-danger mb-3 fw-semibold">¿Confirmar desvinculación?</h4>
+            <p>¿Estás segura de que deseas eliminar la asignación entre el vehículo <strong>{{ asociacion.vehiculo }}</strong> y el cliente <strong>{{ asociacion.cliente.nombre }} {{ asociacion.cliente.apellido }}</strong>?</p>
+            
+            <form method="POST" class="d-flex justify-content-center gap-2 mt-4">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger px-4">Sí, Eliminar</button>
+                <a href="{% url 'lista_clientes_vehiculos' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

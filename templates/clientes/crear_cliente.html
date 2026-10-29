@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Cliente{% endblock %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 600px;">
+    <h2 class="mb-4">Registrar Nuevo Cliente</h2>
+    <form method="POST" enctype="multipart/form-data" class="card card-body shadow-sm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+            <a href="{% url 'home_clientes' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

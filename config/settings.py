@@ -47,8 +47,11 @@ INSTALLED_APPS = [
     'clientesApp',
     'usuarios',
     'reparacionesApp',
+    'compraRepuestosApp',
     'dashboardApp',
     'recuperarcontrasenaApp',
+    'asignacionesApp',
+    'clientesVehiculosApp',
 ]
 
 MIDDLEWARE = [
@@ -174,4 +177,3 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-
