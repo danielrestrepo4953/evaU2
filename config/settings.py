@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'usuarios',
     'reparacionesApp',
     'dashboardApp',
+    'asignacionesApp',
     'clientesVehiculosApp',
 ]
 
