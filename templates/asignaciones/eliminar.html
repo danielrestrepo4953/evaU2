@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar asignación{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-danger mb-2">Taller</span>
+        <h1 class="display-6 fw-semibold mb-1">Eliminar asignación</h1>
+        <p class="text-muted mb-0">Confirma si deseas eliminar este registro.</p>
+    </div>
+    <a href="{% url 'inicio_asignaciones' %}" class="btn btn-outline-primary">
+        Volver al listado
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <div class="alert alert-warning" role="alert">
+            Esta acción no se puede deshacer.
+        </div>
+
+        <div class="border-top border-bottom py-4 mb-4">
+            <span class="badge bg-dark mb-2">Asignación #{{ asignacion.id }}</span>
+            <h2 class="h4 mb-1">
+                {{ asignacion.vehiculo.marca }} {{ asignacion.vehiculo.modelo }}
+            </h2>
+            <p class="text-muted mb-3">Patente: {{ asignacion.vehiculo.patente }}</p>
+            <span class="text-muted small d-block mb-1">Empleado a cargo</span>
+            <p class="mb-3">{{ asignacion.empleado.nombre }} {{ asignacion.empleado.apellido }} ({{ asignacion.empleado.rut }})</p>
+            <span class="text-muted small d-block mb-1">Motivo</span>
+            <p class="mb-0">{{ asignacion.motivo }}</p>
+        </div>
+
+        <p class="mb-4">¿Estás seguro de que deseas eliminar esta asignación?</p>
+
+        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+            <a href="{% url 'inicio_asignaciones' %}" class="btn btn-outline-secondary">
+                Cancelar
+            </a>
+            <form method="post" action="{% url 'eliminar_asignacion' asignacion.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">
+                    Eliminar asignación
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

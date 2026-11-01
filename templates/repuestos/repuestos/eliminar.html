@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar repuesto{% endblock %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 550px;">
+    <div class="card card-body shadow-sm text-center">
+        <h1 class="h3 mb-3 text-danger">¿Eliminar repuesto?</h1>
+        <p>¿Estás seguro de que deseas eliminar <strong>{{ repuesto.nombre }}</strong> (código {{ repuesto.codigo }})?</p>
+        <form method="post" class="d-flex justify-content-center gap-2 mt-3">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url 'home_repuestos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

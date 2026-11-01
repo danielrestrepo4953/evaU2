@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Asignaciones de vehículos{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-primary mb-2">Taller</span>
+        <h1 class="display-6 fw-semibold mb-1">Asignaciones de vehículos</h1>
+        <p class="text-muted mb-0">Consulta qué empleado está a cargo de cada vehículo.</p>
+    </div>
+    {% if perms.asignacionesApp.add_asignacion %}
+    <a href="{% url 'registrar_asignacion' %}" class="btn btn-primary">Registrar asignación</a>
+    {% endif %}
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" action="{% url 'inicio_asignaciones' %}" class="row g-2 align-items-end">
+            <div class="col-12 col-md-7">
+                <label for="buscar-asignaciones" class="form-label fw-semibold">Buscar asignación</label>
+                <input type="search" id="buscar-asignaciones" name="q" value="{{ busqueda }}" class="form-control"
+                       placeholder="Empleado, RUT, marca, modelo, patente o motivo...">
+            </div>
+            <div class="col-12 col-md-3">
+                <label for="filtro-estado" class="form-label fw-semibold">Estado</label>
+                <select id="filtro-estado" name="estado" class="form-select">
+                    <option value="">Todos</option>
+                    {% for valor, nombre in estados %}
+                        <option value="{{ valor }}" {% if estado == valor %}selected{% endif %}>{{ nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-12 col-md-2 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">Buscar</button>
+                <a href="{% url 'inicio_asignaciones' %}" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if asignaciones %}
+    <div class="card border-0 shadow-sm">
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Empleado</th>
+                        <th>Vehículo</th>
+                        <th>Inicio</th>
+                        <th>Término</th>
+                        <th>Motivo</th>
+                        <th>Estado</th>
+                        {% if perms.asignacionesApp.change_asignacion or perms.asignacionesApp.delete_asignacion %}
+                        <th class="text-end">Acciones</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asignacion in asignaciones %}
+                    <tr>
+                        <td>{{ asignacion.id }}</td>
+                        <td>
+                            <strong>{{ asignacion.empleado.nombre }} {{ asignacion.empleado.apellido }}</strong>
+                            <span class="text-muted small d-block">{{ asignacion.empleado.cargo }}</span>
+                        </td>
+                        <td>
+                            <strong>{{ asignacion.vehiculo.marca }} {{ asignacion.vehiculo.modelo }}</strong>
+                            <span class="text-muted small d-block">Patente: {{ asignacion.vehiculo.patente }}</span>
+                        </td>
+                        <td>{{ asignacion.fecha_inicio|date:"d/m/Y" }}</td>
+                        <td>{{ asignacion.fecha_fin|date:"d/m/Y"|default:"—" }}</td>
+                        <td>{{ asignacion.motivo }}</td>
+                        <td>
+                            {% if asignacion.estado == 'Activa' %}
+                                <span class="badge text-bg-success">Activa</span>
+                            {% else %}
+                                <span class="badge text-bg-secondary">Finalizada</span>
+                            {% endif %}
+                        </td>
+                        {% if perms.asignacionesApp.change_asignacion or perms.asignacionesApp.delete_asignacion %}
+                        <td class="text-end text-nowrap">
+                            {% if perms.asignacionesApp.change_asignacion %}
+                            <a href="{% url 'editar_asignacion' asignacion.id %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                            {% endif %}
+                            {% if perms.asignacionesApp.delete_asignacion %}
+                            <a href="{% url 'eliminar_asignacion' asignacion.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="alert alert-info" role="alert">
+        {% if busqueda or estado %}
+            No se encontraron asignaciones con esos filtros.
+        {% else %}
+            Aún no hay asignaciones registradas.
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

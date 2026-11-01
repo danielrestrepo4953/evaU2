@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if repuesto %}Editar repuesto{% else %}Agregar repuesto{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 700px;">
+    <h1 class="mb-4">{% if repuesto %}Editar repuesto{% else %}Agregar repuesto{% endif %}</h1>
+    <form method="post" enctype="multipart/form-data" class="card card-body shadow-sm">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary">Guardar repuesto</button>
+            <a href="{% url 'home_repuestos' %}" class="btn btn-secondary">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
