@@ -7,7 +7,11 @@ from django.test import TestCase, override_settings
 from django.urls import reverse
 from PIL import Image
 
+from clientesApp.models import Cliente
+from compraRepuestosApp.models import CompraRepuesto, DetalleCompra
+from reparacionesApp.models import Reparacion, RepuestoUtilizado
 from .models import repuestos
+from vehiculosApp.models import Vehiculo
 
 
 class RepuestoCrudTests(TestCase):
@@ -57,3 +61,63 @@ class RepuestoCrudTests(TestCase):
         response = self.client.post(reverse('eliminar_repuesto', args=[repuesto.id]))
         self.assertRedirects(response, reverse('home_repuestos'))
         self.assertFalse(repuestos.objects.filter(id=repuesto.id).exists())
+
+    def test_no_permite_eliminar_repuesto_usado_en_compra(self):
+        repuesto = repuestos.objects.create(
+            codigo='REP-002',
+            nombre='Filtro de aceite',
+            precio=8000,
+            stock=2,
+            detalle='Filtro de prueba',
+        )
+        compra = CompraRepuesto.objects.create(
+            cliente=Cliente.objects.create(nombre='Cliente de prueba'),
+            proveedor='Proveedor de prueba',
+        )
+        DetalleCompra.objects.create(
+            compra=compra,
+            repuesto=repuesto,
+            cantidad=1,
+            precio_unitario=8000,
+        )
+
+        response = self.client.post(reverse('eliminar_repuesto', args=[repuesto.id]))
+
+        self.assertRedirects(response, reverse('home_repuestos'))
+        self.assertTrue(repuestos.objects.filter(id=repuesto.id).exists())
+        self.assertContains(
+            response,
+            'No se puede eliminar el repuesto porque ha sido utilizado en compras o reparaciones.',
+        )
+
+    def test_no_permite_eliminar_repuesto_usado_en_reparacion(self):
+        repuesto = repuestos.objects.create(
+            codigo='REP-003',
+            nombre='Pastillas de freno',
+            precio=15000,
+            stock=2,
+            detalle='Pastillas de prueba',
+        )
+        reparacion = Reparacion.objects.create(
+            vehiculo=Vehiculo.objects.create(
+                marca='Marca de prueba',
+                modelo='Modelo de prueba',
+                anio=2024,
+                patente='TEST-03',
+            ),
+            detalle='Reparacion de prueba',
+        )
+        RepuestoUtilizado.objects.create(
+            reparacion=reparacion,
+            repuesto=repuesto,
+            cantidad=1,
+        )
+
+        response = self.client.post(reverse('eliminar_repuesto', args=[repuesto.id]))
+
+        self.assertRedirects(response, reverse('home_repuestos'))
+        self.assertTrue(repuestos.objects.filter(id=repuesto.id).exists())
+        self.assertContains(
+            response,
+            'No se puede eliminar el repuesto porque ha sido utilizado en compras o reparaciones.',
+        )

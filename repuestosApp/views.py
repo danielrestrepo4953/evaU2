@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models.deletion import ProtectedError
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -57,7 +58,15 @@ def editar_repuesto(request, repuesto_id):
 def eliminar_repuesto(request, repuesto_id):
     repuesto = get_object_or_404(repuestos, id=repuesto_id)
     if request.method == 'POST':
-        repuesto.delete()
+        try:
+            repuesto.delete()
+        except ProtectedError:
+            messages.error(
+                request,
+                'No se puede eliminar el repuesto porque ha sido utilizado en compras o reparaciones.'
+            )
+            return redirect('home_repuestos')
+
         messages.success(request, 'El repuesto se eliminó correctamente.')
         return redirect('home_repuestos')
 
