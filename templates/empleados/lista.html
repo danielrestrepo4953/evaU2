@@ -7,11 +7,27 @@
 <div
     class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4 page-header">
     <h1 class="mb-0 display-6 fw-semibold">Empleados registrados</h1>
-        <div class="d-flex flex-wrap gap-2">
-        <button type="button" class="btn btn-success">Crear</button>
-        <button type="button" class="btn btn-danger">Eliminar</button>
-        <button type="button" class="btn btn-warning">Editar</button>
+    <div class="d-flex flex-wrap gap-2">
+        {% if perms.empleadosApp.add_empleado %}
+        <a href="{% url 'registrar_empleado' %}" class="btn btn-success">Registrar empleado</a>
+        {% endif %}
         <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <form method="get" action="{% url 'principal' %}" class="row g-2 align-items-end">
+            <div class="col-12 col-md-9">
+                <label for="buscar-empleados" class="form-label fw-semibold">Buscar empleado</label>
+                <input type="search" id="buscar-empleados" name="q" value="{{ busqueda }}" class="form-control"
+                       placeholder="RUT, nombre, apellido o cargo...">
+            </div>
+            <div class="col-12 col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">Buscar</button>
+                <a href="{% url 'principal' %}" class="btn btn-outline-secondary">Limpiar</a>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -36,14 +52,28 @@
                     <li class="list-group-item px-0"><strong>RUT:</strong> {{ empleado.rut }}</li>
                 </ul>
 
-                <a href="{% url 'detalle' empleado.id %}" class="btn btn-dark mt-auto">Ver detalles</a>
+                <div class="mt-auto d-flex flex-wrap gap-2">
+                    <a href="{% url 'detalle' empleado.id %}" class="btn btn-dark flex-grow-1">Ver detalles</a>
+                    {% if perms.empleadosApp.change_empleado %}
+                    <a href="{% url 'editar_empleado' empleado.id %}" class="btn btn-warning">Editar</a>
+                    {% endif %}
+                    {% if perms.empleadosApp.delete_empleado %}
+                    <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-danger">Eliminar</a>
+                    {% endif %}
+                </div>
 
             </div>
         </div>
     </div>
     {% empty %}
     <div class="col-12">
-        <div class="alert alert-info">No hay empleados disponibles.</div>
+        <div class="alert alert-info">
+            {% if busqueda %}
+                No se encontraron empleados con "{{ busqueda }}".
+            {% else %}
+                No hay empleados disponibles.
+            {% endif %}
+        </div>
     </div>
     {% endfor %}
 </div>
