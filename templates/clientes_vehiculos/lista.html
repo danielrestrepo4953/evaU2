@@ -6,7 +6,9 @@
 <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Vehículos Asignados a Clientes</h2>
-        <a href="{% url 'asociar_cliente_vehiculo' %}" class="btn btn-primary">Asignar Vehículo a Cliente</a>
+        {% if perms.clientesVehiculosApp.add_clientevehiculo %}
+            <a href="{% url 'asociar_cliente_vehiculo' %}" class="btn btn-primary">Asignar Vehículo a Cliente</a>
+        {% endif %}
     </div>
 
     <div class="card shadow-sm border-0">
@@ -29,8 +31,13 @@
                         <td>{{ item.fecha_registro|date:"d/m/Y" }}</td>
                         <td>{{ item.observacion|default:"Sin observaciones" }}</td>
                         <td class="text-end pe-4">
-                            <a href="{% url 'editar_asociacion' item.id %}" class="btn btn-sm btn-outline-warning me-1">Editar</a>
-                            <a href="{% url 'eliminar_asociacion' item.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                            {% if perms.clientesVehiculosApp.change_clientevehiculo %}
+                                <a href="{% url 'editar_asociacion' item.id %}" class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                            {% endif %}
+                            
+                            {% if perms.clientesVehiculosApp.delete_clientevehiculo %}
+                                <a href="{% url 'eliminar_asociacion' item.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}
