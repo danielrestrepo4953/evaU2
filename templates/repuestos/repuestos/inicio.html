@@ -7,7 +7,9 @@
 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center align-items-start gap-3 mb-4 page-header">
     <h1 class="mb-0 display-6 fw-semibold">Catálogo de repuestos</h1>
     <div class="d-flex flex-wrap gap-2">
+        {% if perms.repuestosApp.add_repuestos %}
         <a href="{% url 'crear_repuesto' %}" class="btn btn-success">Agregar repuesto</a>
+        {% endif %}
         <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
     </div>
 </div>
@@ -30,8 +32,12 @@
                 <p class="card-text text-success fw-bold fs-5">${{ repuesto.precio|floatformat:0 }}</p>
                 <div class="d-flex flex-wrap gap-2 mt-auto">
                     <a href="{% url 'detalle_repuesto' repuesto.id %}" class="btn btn-dark flex-fill">Ver detalles</a>
+                    {% if perms.repuestosApp.change_repuestos %}
                     <a href="{% url 'editar_repuesto' repuesto.id %}" class="btn btn-warning">Editar</a>
+                    {% endif %}
+                    {% if perms.repuestosApp.delete_repuestos %}
                     <a href="{% url 'eliminar_repuesto' repuesto.id %}" class="btn btn-danger">Eliminar</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

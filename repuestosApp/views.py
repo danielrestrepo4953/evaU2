@@ -1,17 +1,19 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models.deletion import ProtectedError
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
 from repuestosApp.models import repuestos, descripcion
 from .forms import RepuestoForm
 
 @login_required
+@permission_required('repuestosApp.view_repuestos', raise_exception=True)
 def inicio(request):
     repuesto = repuestos.objects.all()
     return render(request, 'repuestos/repuestos/inicio.html', {'repuestos': repuesto})
 
 @login_required
+@permission_required('repuestosApp.view_repuestos', raise_exception=True)
 def detalle_repuesto(request, repuesto_id):
     repuesto = get_object_or_404(repuestos, id=repuesto_id)
     detalle = descripcion.objects.filter(repuesto_id=repuesto_id).first()
@@ -23,6 +25,7 @@ def detalle_repuesto(request, repuesto_id):
 
 
 @login_required
+@permission_required('repuestosApp.add_repuestos', raise_exception=True)
 def crear_repuesto(request):
     if request.method == 'POST':
         form = RepuestoForm(request.POST, request.FILES)
@@ -37,6 +40,7 @@ def crear_repuesto(request):
 
 
 @login_required
+@permission_required('repuestosApp.change_repuestos', raise_exception=True)
 def editar_repuesto(request, repuesto_id):
     repuesto = get_object_or_404(repuestos, id=repuesto_id)
     if request.method == 'POST':
@@ -55,6 +59,7 @@ def editar_repuesto(request, repuesto_id):
 
 
 @login_required
+@permission_required('repuestosApp.delete_repuestos', raise_exception=True)
 def eliminar_repuesto(request, repuesto_id):
     repuesto = get_object_or_404(repuestos, id=repuesto_id)
     if request.method == 'POST':

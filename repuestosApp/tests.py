@@ -2,6 +2,7 @@ from io import BytesIO
 import tempfile
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
 from django.urls import reverse
@@ -20,6 +21,15 @@ class RepuestoCrudTests(TestCase):
         self.settings_override = override_settings(MEDIA_ROOT=self.media_directory.name)
         self.settings_override.enable()
         user = get_user_model().objects.create_user(username='usuario', password='clave-segura')
+        user.user_permissions.set(Permission.objects.filter(
+            content_type__app_label='repuestosApp',
+            codename__in=(
+                'view_repuestos',
+                'add_repuestos',
+                'change_repuestos',
+                'delete_repuestos',
+            ),
+        ))
         self.client.force_login(user)
 
     def tearDown(self):
@@ -61,6 +71,22 @@ class RepuestoCrudTests(TestCase):
         response = self.client.post(reverse('eliminar_repuesto', args=[repuesto.id]))
         self.assertRedirects(response, reverse('home_repuestos'))
         self.assertFalse(repuestos.objects.filter(id=repuesto.id).exists())
+
+    def test_usuario_sin_permisos_no_puede_acceder_por_url(self):
+        usuario = get_user_model().objects.create_user(
+            username='sin-permisos',
+            password='clave-segura',
+        )
+        self.client.force_login(usuario)
+
+        for nombre_url, args in (
+            ('home_repuestos', ()),
+            ('crear_repuesto', ()),
+            ('editar_repuesto', (1,)),
+            ('eliminar_repuesto', (1,)),
+        ):
+            response = self.client.get(reverse(nombre_url, args=args))
+            self.assertEqual(response.status_code, 403)
 
     def test_no_permite_eliminar_repuesto_usado_en_compra(self):
         repuesto = repuestos.objects.create(
