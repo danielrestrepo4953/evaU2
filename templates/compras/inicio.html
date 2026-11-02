@@ -26,6 +26,14 @@
                         <div class="text-md-end">
                             <span class="text-muted small d-block">Fecha</span>
                             <strong>{{ compra.fecha|date:"d/m/Y" }}</strong>
+                            <div class="mt-3">
+                                {% if perms.compraRepuestosApp.change_comprarepuesto and perms.compraRepuestosApp.change_detallecompra %}
+                                    <a href="{% url 'editar_compra' compra.id %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                                {% endif %}
+                                {% if perms.compraRepuestosApp.delete_comprarepuesto and perms.compraRepuestosApp.delete_detallecompra %}
+                                    <a href="{% url 'eliminar_compra' compra.id %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
 

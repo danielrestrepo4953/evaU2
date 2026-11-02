@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar compra{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+    <div>
+        <span class="badge bg-danger mb-2">Inventario</span>
+        <h1 class="display-6 fw-semibold mb-1">Eliminar compra</h1>
+        <p class="text-muted mb-0">Confirma si deseas eliminar esta compra del registro.</p>
+    </div>
+    <a href="{% url 'inicio_compras' %}" class="btn btn-outline-primary">Volver al listado</a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <div class="alert alert-warning" role="alert">
+            Esta acción no se puede deshacer y descontará sus repuestos del stock.
+        </div>
+        <div class="border-top border-bottom py-4 mb-4">
+            <span class="badge bg-dark mb-2">Compra #{{ compra.id }}</span>
+            <h2 class="h4 mb-1">{{ compra.cliente }}</h2>
+            <p class="text-muted mb-0">Proveedor: {{ compra.proveedor }}</p>
+        </div>
+        <p class="mb-4">¿Estás seguro de que deseas eliminar esta compra?</p>
+        <div class="d-flex flex-column flex-sm-row justify-content-end gap-2">
+            <a href="{% url 'inicio_compras' %}" class="btn btn-outline-secondary">Cancelar</a>
+            <form method="post" action="{% url 'eliminar_compra' compra.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100">Eliminar compra</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
