@@ -34,7 +34,15 @@
         <div class="alert alert-warning">No hay detalle disponible para este empleado.</div>
         {% endif %}
 
-        <a href="{% url 'principal' %}" class="btn btn-outline-primary mt-4">Volver a la lista</a>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a href="{% url 'principal' %}" class="btn btn-outline-primary">Volver a la lista</a>
+            {% if perms.empleadosApp.change_empleado %}
+            <a href="{% url 'editar_empleado' empleado.id %}" class="btn btn-warning">Editar</a>
+            {% endif %}
+            {% if perms.empleadosApp.delete_empleado %}
+            <a href="{% url 'eliminar_empleado' empleado.id %}" class="btn btn-danger">Eliminar</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}
