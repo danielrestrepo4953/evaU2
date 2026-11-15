@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'clientesVehiculosApp',
     'repuestosApi',
     'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,10 @@ REST_FRAMEWORK = {
     ),
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
@@ -161,4 +166,23 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API SISTEMA DE REPUESTOS',
+    'DESCRIPTION': 'Documentacion de la API REST',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API Gestion de Repuestos',
+    'DESCRIPTION': '''
+API PARA LA ADMINISTRACION DE REPUESTOS.''',
+    'VERSION': '1.0.0',
+    'CONTACT':{
+        'NAME': 'Benjamin Avalos',
+        'EMAIL': 'avalosb784@gmail.com'
+    }
 }

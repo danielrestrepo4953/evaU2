@@ -6,6 +6,12 @@ from vehiculosApp import views
 from repuestosApi import views as api_vistas
 from usuarios import views as usuarios_views
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('vehiculos/', include('vehiculosApp.urls')),
@@ -26,6 +32,10 @@ urlpatterns = [
     path('api/repuestos/', api_vistas.repuestos, name='api_repuestos'),
     path('api/repuestos_lista/', api_vistas.repuesto_lista, name='repuestos_lista'),
     path('api/repuestos_detalle/<int:pk>/', api_vistas.repuesto_detalle, name= 'repuestos_detalle'),
+    # ruta documentacion de la API
+    path('api/schema/',SpectacularAPIView.as_view(),name='schema'),
+    path('api/swagger/',SpectacularSwaggerView.as_view(url_name='schema'),name='swagger-ui'),
+    path('api/redoc/',SpectacularRedocView.as_view(url_name='schema'),name='redoc'),
 ]
 
 if settings.DEBUG:
