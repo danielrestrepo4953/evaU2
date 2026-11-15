@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from vehiculosApp import views
+from repuestosApi import views as api_vistas
 from usuarios import views as usuarios_views
 
 urlpatterns = [
@@ -22,6 +23,9 @@ urlpatterns = [
     path('clientes-vehiculos/', include('clientesVehiculosApp.urls')),
     path('usuarios/', usuarios_views.principal_usuarios, name='inicio_usuarios'),
     path('dashboard/', include('dashboardApp.urls'), name='dashboard_inicio'),
+    path('api/repuestos/', api_vistas.repuestos, name='api_repuestos'),
+    path('api/repuestos_lista/', api_vistas.repuesto_lista, name='repuestos_lista'),
+    path('api/repuestos_detalle/<int:pk>/', api_vistas.repuesto_detalle, name= 'repuestos_detalle'),
 ]
 
 if settings.DEBUG:

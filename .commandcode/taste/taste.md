@@ -1,0 +1,2 @@
+- Prefers changes to be committed/pushed to the same Git branch they specify, rather than moved to another branch. Confidence: 0.9
+- When requesting code analysis, review, or explanations, prefers a read-only response with no files modified unless they explicitly ask for implementation. Confidence: 0.95

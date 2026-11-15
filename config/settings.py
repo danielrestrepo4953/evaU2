@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'dashboardApp',
     'asignacionesApp',
     'clientesVehiculosApp',
+    'repuestosApi',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -124,6 +126,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#Django REST Framework: se usa autenticacion JWT por defecto
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
