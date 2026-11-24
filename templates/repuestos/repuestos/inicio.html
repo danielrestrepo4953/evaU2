@@ -9,6 +9,8 @@
     <div class="d-flex flex-wrap gap-2">
         <a href="{% url 'crear_repuesto' %}" class="btn btn-success">Agregar repuesto</a>
         <a href="{% url 'menu-principal' %}" class="btn btn-outline-primary">Volver al inicio</a>
+        <a href="{% url 'exportar_repuestos_excel' %}" class="btn btn-secondary"><i class="bi bi-file-earmark-excel"></i> &nbsp;Exportar a Excel</a>
+        <a href="{% url 'exportar_repuestos_pdf' %}" class="btn btn-outline-danger"><i class="bi bi-file-earmark-pdf"></i> &nbsp;Exportar a PDF</a>
     </div>
 </div>
 

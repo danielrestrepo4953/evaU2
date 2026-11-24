@@ -132,9 +132,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-}
-
-REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
@@ -170,19 +167,20 @@ MAILERS = {
 
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'API SISTEMA DE REPUESTOS',
-    'DESCRIPTION': 'Documentacion de la API REST',
+    'TITLE': 'API Gestion de Repuestos',
+    'DESCRIPTION': 'API PARA LA ADMINISTRACION DE REPUESTOS.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-}
-
-SPECTACULAR_SETTINGS = {
-    'TITLE': 'API Gestion de Repuestos',
-    'DESCRIPTION': '''
-API PARA LA ADMINISTRACION DE REPUESTOS.''',
-    'VERSION': '1.0.0',
-    'CONTACT':{
+    'CONTACT': {
         'NAME': 'Benjamin Avalos',
-        'EMAIL': 'avalosb784@gmail.com'
-    }
+        'EMAIL': 'avalosb784@gmail.com',
+    },
+    'SECURITY': [{'Bearer': []}],
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT',
+        },
+    },
 }
